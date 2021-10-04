@@ -1,0 +1,44 @@
+name: Publishing svelte-iconor
+on:
+    release:
+        types: [created]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Setup .npmrc file to publish to npm
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+                  registry-url: 'https://registry.npmjs.org'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Generates the icons data
+              run: npm run package
+
+            - name: Build the package
+              run: npm run build
+
+            - name: Publish to NPM Packages
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
+
+            - name: Setup .npmrc file to publish to GitHub Packages
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@indaco'
+
+            - name: Publish to GitHub Packages
+              run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
