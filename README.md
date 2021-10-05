@@ -28,7 +28,7 @@ yarn add @indaco/svelte-iconoir
 
 ### SvelteKit
 
-Add the following to the `svelte.config.js` file to optimize and bundle all the used icons in a single file when you run **build** your project with `svelte-kit build`.
+Add the following to the `svelte.config.js` file to optimize and bundle all the used icons in a single file when **build** your project with `svelte-kit build`.
 
 ```javascript
 const config = {
