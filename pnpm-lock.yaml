@@ -15,15 +15,13 @@ specifiers:
   svelte: ^3.43.1
   svg-parser: ^2.0.4
 
-dependencies:
-  iconoir: 1.0.0
-
 devDependencies:
   '@rollup/plugin-json': 4.1.0_rollup@2.58.0
   '@rollup/plugin-node-resolve': 13.0.5_rollup@2.58.0
   eslint: 7.32.0
   eslint-config-prettier: 8.3.0_eslint@7.32.0
   eslint-plugin-svelte3: 3.2.1_eslint@7.32.0+svelte@3.43.1
+  iconoir: 1.0.0
   prettier: 2.4.1
   prettier-plugin-svelte: 2.4.0_prettier@2.4.1+svelte@3.43.1
   rollup: 2.58.0
@@ -580,7 +578,7 @@ packages:
 
   /iconoir/1.0.0:
     resolution: {integrity: sha512-rZ4ZMMOarUfsRrfH7h3MGIFVNrcWsThtJWpTuZOp/FYhSomaa32HhHg8WH0V3VlN7MIVK4VMD2O7jNq6jRKY3w==}
-    dev: false
+    dev: true
 
   /ignore/4.0.6:
     resolution: {integrity: sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==}
