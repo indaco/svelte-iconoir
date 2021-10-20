@@ -1,6 +1,10 @@
 <div align="center">
-  <h1>Svelte Iconoir</h1>
-  <a href="https://www.npmjs.com/package/@indaco/svelte-iconoir"><img src="https://img.shields.io/npm/v/@indaco/svelte-iconoir.svg?style=flat" /></a>
+    <h1>Svelte Iconoir</h1>
+    <a href="https://github.com/indaco/svelte-iconoir/actions/workflows/release.yml" target="_blank">
+        <img src="https://github.com/indaco/svelte-iconoir/actions/workflows/release.yml/badge.svg" alt="CI" />
+    </a>
+    &nbsp;
+    <a href="https://www.npmjs.com/package/@indaco/svelte-iconoir" target="_blank"><img src="https://img.shields.io/npm/v/@indaco/svelte-iconoir.svg?style=flat" alt="NPM Package" /></a>
 </div>
 
 # Svelte Iconoir
