@@ -1,6 +1,6 @@
 {
 	"name": "@indaco/svelte-iconoir",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "Iconoir SVG icons to Svelte and SvelteKit.",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
@@ -31,17 +31,16 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@rollup/plugin-json": "^4.1.0",
-		"@rollup/plugin-node-resolve": "^13.0.5",
+		"@rollup/plugin-node-resolve": "^13.0.6",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
-		"iconoir": "^1.0.0",
 		"prettier": "^2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
 		"rollup": "^2.58.0",
 		"rollup-plugin-svelte": "^7.1.0",
 		"rollup-plugin-terser": "^7.0.2",
-		"svelte": "^3.43.1",
+		"svelte": "^3.44.0",
 		"svg-parser": "^2.0.4"
 	},
 	"exports": {
