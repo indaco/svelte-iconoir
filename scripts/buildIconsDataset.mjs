@@ -8,10 +8,12 @@ const __dirname = dirname(__filename);
 
 // ----------------------------------------------------------------
 
-const INPUT_FOLDER = join(__dirname, '..', 'node_modules', 'iconoir', 'icons');
+const INPUT_FOLDER = join(__dirname, '..', 'packages', 'iconoir', 'icons');
 const ICONS_OUTPUT_FOLDER = join(__dirname, '..', 'iconoir');
 const DIST_FOLDER = join(__dirname, '..', 'dist');
 const INDEX_FILE = join(__dirname, '..', 'src', 'index.js');
+
+let counter = 0;
 
 // ----------------------------------------------------------------
 
@@ -19,6 +21,7 @@ function main() {
 	resetAll(INDEX_FILE, ICONS_OUTPUT_FOLDER, DIST_FOLDER);
 	makeDir(ICONS_OUTPUT_FOLDER);
 	generateIconsDataset();
+	console.info('\nIcons counter = ' + counter + '\n');
 }
 
 function resetAll(indexFilepath, outputFolder, distFolder) {
@@ -46,6 +49,7 @@ function generateIconsDataset() {
 				icon['data'].push(child.properties);
 			});
 		});
+		counter++;
 		// write JSON string to a file
 		saveIconData(filename, JSON.stringify(icon));
 		// append an entry to index.js file
