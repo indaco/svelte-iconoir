@@ -10,6 +10,8 @@ jobs:
             packages: write
         steps:
             - uses: actions/checkout@v2
+              with:
+                  submodules: recursive
 
             - name: Setup .npmrc file to publish to npm
               uses: actions/setup-node@v2
