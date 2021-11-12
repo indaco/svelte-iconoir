@@ -139,6 +139,18 @@ function _makeIconNameString(filename) {
 		case '4x4Cell':
 			return 'Cell4x4';
 			break;
+		case 'github':
+			return 'GitHub';
+		case 'githubOutline':
+			return 'GitHubOutline';
+		case 'gitlabFull':
+			return 'GitLabFull';
+		case 'linkedin':
+			return 'LinkedIn';
+		case 'tiktok':
+			return 'TikTok';
+		case 'youtube':
+			return 'YouTube';
 		default:
 			return _capitalizeFirstLetter(camelCase);
 			break;
