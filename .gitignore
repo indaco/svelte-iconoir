@@ -80,3 +80,7 @@ $RECYCLE.BIN/
 # Directories
 dist
 iconoir
+
+# Files
+
+src/index.js
