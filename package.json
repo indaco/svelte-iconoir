@@ -47,7 +47,7 @@
 		"./package.json": "./package.json",
 		"./src/Icon.svelte": "./src/Icon.svelte",
 		"./src/index.js": "./src/index.js",
-		".": "./dist/index.js"
+		".": "./dist/index.mjs"
 	},
 	"repository": {
 		"type": "git",
