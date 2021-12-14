@@ -78,7 +78,6 @@ Temporary Items
 $RECYCLE.BIN/
 
 # Directories
-/dist/**
 src/lib/iconoir
 
 # Files
