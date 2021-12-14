@@ -17,6 +17,7 @@
 	{color}
 	aria-labelledby={altText}
 	class={$$props.class}
+	aria-hidden="true"
 >
 	{#each icon.data ?? [] as attr}
 		<!-- @ts-ignore -->

@@ -6,9 +6,9 @@ const __dirname = dirname(__filename);
 
 // ----------------------------------------------------------------
 
-const ICONS_OUTPUT_FOLDER = join(__dirname, '..', 'iconoir');
+const ICONS_OUTPUT_FOLDER = join(__dirname, '..', 'src', 'lib', 'iconoir');
 const DIST_FOLDER = join(__dirname, '..', 'dist');
-const INDEX_FILE = join(__dirname, '..', 'src', 'index.js');
+const INDEX_FILE = join(__dirname, '..', 'src', 'lib', 'index.ts');
 
 // ----------------------------------------------------------------
 

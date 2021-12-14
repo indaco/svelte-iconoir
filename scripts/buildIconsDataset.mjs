@@ -9,9 +9,9 @@ const __dirname = dirname(__filename);
 // ----------------------------------------------------------------
 
 const INPUT_FOLDER = join(__dirname, '..', 'packages', 'iconoir', 'icons');
-const ICONS_OUTPUT_FOLDER = join(__dirname, '..', 'iconoir');
+const ICONS_OUTPUT_FOLDER = join(__dirname, '..', 'src', 'lib', 'iconoir');
 const DIST_FOLDER = join(__dirname, '..', 'dist');
-const INDEX_FILE = join(__dirname, '..', 'src', 'index.js');
+const INDEX_FILE = join(__dirname, '..', 'src', 'lib', 'index.ts');
 
 let counter = 0;
 
@@ -71,7 +71,6 @@ function appendToExports(filename) {
 	const iconFilename = _makeIconNameString(filename);
 	const exportString = _makeExportEntryString(filename, iconFilename);
 
-	//console.log('"./iconoir/' + filename + '.json":"./iconoir/' + filename + '.json",');
 	console.info('* Add ' + iconFilename + ' as entry to the module exports.');
 	fs.appendFileSync(INDEX_FILE, exportString, (err) => {
 		if (err) {
@@ -82,7 +81,7 @@ function appendToExports(filename) {
 
 function appendIconoirEntryToExports() {
 	const exportString = `import Iconoir from './Iconoir.svelte';
-export default Iconoir; `;
+export {Iconoir}; `;
 	console.info('\n* Add Iconoir component as entry to the module exports.');
 	fs.appendFileSync(INDEX_FILE, exportString, (err) => {
 		if (err) {
@@ -151,6 +150,8 @@ function _makeIconNameString(filename) {
 			return 'TikTok';
 		case 'youtube':
 			return 'YouTube';
+		case 'iconoir':
+			return 'IconoirIcon';
 		default:
 			return _capitalizeFirstLetter(camelCase);
 			break;
@@ -158,9 +159,7 @@ function _makeIconNameString(filename) {
 }
 
 function _makeExportEntryString(filename, iconFilename) {
-	return (
-		'export { default as ' + iconFilename + " } from '../iconoir/" + filename + ".json';\r\n"
-	);
+	return 'export { default as ' + iconFilename + " } from './iconoir/" + filename + ".json';\r\n";
 }
 
 // ----------------------------------------------------------------

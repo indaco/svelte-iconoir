@@ -11,14 +11,14 @@
 
 ## Description
 
-This package provide the entire [iconoir](https://github.com/lucaburgio/iconoir) set (900+ SVG icons) to be used with Svelte & SvelteKit. It is based on the official [iconoir](https://github.com/lucaburgio/iconoir) project.
+This package provide the entire [iconoir](https://github.com/lucaburgio/iconoir) set (900+ SVG icons) to be used with SvelteKit. It is based on the official [iconoir](https://github.com/lucaburgio/iconoir) project.
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
 ## Install
 
 ```bash
-#pnpm
+# pnpm
 pnpm install @indaco/svelte-iconoir
 
 # npm
@@ -36,16 +36,16 @@ Add the following to the `svelte.config.js` file to optimize and bundle all the 
 
 ```javascript
 const config = {
+ // ...
+ kit: {
   // ...
-  kit: {
-    // ...
-    vite: {
-      // ...
-      optimizeDeps: {
-        include: ["@indaco/svelte-iconoir"],
-      },
-    },
-  },
+  vite: {
+   // ...
+   optimizeDeps: {
+    include: ['@indaco/svelte-iconoir']
+   }
+  }
+ }
 };
 export default config;
 ```
@@ -58,12 +58,13 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import Iconoir, { List, SunLight } from '@indaco/svelte-iconoir';
+ import { List, SunLight } from '@indaco/svelte-iconoir';
+ import Iconoir from '@indaco/svelte-iconoir/Iconoir.svelte';
 </script>
 
-<Iconoir icon={List} />
+<Iconoir icon="{List}" />
 
-<Iconoir icon={SunLight} class="roundedColor" />
+<Iconoir icon="{SunLight}" class="roundedColor" />
 
 <style>
  .roundedColor {
@@ -79,23 +80,26 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import Iconoir, { View360 } from '@indaco/svelte-iconoir';
+ import { View360 } from '@indaco/svelte-iconoir';
+ import Iconoir from '@indaco/svelte-iconoir/Iconoir.svelte';
 </script>
 
 <Iconoir
- icon={View360}
+ icon="{View360}"
  style="background-color: green; padding: 4px; border-radius: 9999px;"
- color="#ffffff" />
+ color="#ffffff"
+/>
 ```
 
 ### 3. With Tailwind CSS
 
 ```html
 <script>
- import Iconoir, { Activity } from '@indaco/svelte-iconoir';
+ import { Activity } from '@indaco/svelte-iconoir';
+ import Iconoir from '@indaco/svelte-iconoir/Iconoir.svelte';
 </script>
 
-<Iconoir icon={Activity} class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
+<Iconoir icon="{Activity}" class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
 ```
 
 ## Properties

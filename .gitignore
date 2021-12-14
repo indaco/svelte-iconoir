@@ -78,9 +78,8 @@ Temporary Items
 $RECYCLE.BIN/
 
 # Directories
-dist
-iconoir
+/dist/**
+src/lib/iconoir
 
 # Files
-
-src/index.js
+src/lib/index.ts
