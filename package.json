@@ -1,8 +1,12 @@
 {
 	"name": "@indaco/svelte-iconoir",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Iconoir SVG icons to SvelteKit.",
 	"svelte": "index.js",
+	"files": [
+		"dist",
+		"dist/**/*"
+	],
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
