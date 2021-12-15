@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 const INPUT_FOLDER = join(__dirname, '..', 'packages', 'iconoir', 'icons');
 const LIB_FOLDER = join(__dirname, '..', 'src', 'lib');
-const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'iconoir');
+const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'icons');
 const INDEX_FILE = join(__dirname, '..', 'src', 'lib', 'index.ts');
 const DIST_FOLDER = join(__dirname, '..', 'dist');
 
@@ -159,14 +159,11 @@ function _makeIconNameString(filename) {
 function _makeExportEntryString(iconFilename) {
 	return (
 		`
-	import ` +
+	export { default as ` +
 		iconFilename +
-		` from './iconoir/` +
+		`} from './icons/` +
 		iconFilename +
 		`.svelte';
-	export {` +
-		iconFilename +
-		`};
 	`
 	);
 }
