@@ -9,7 +9,8 @@ const __dirname = dirname(__filename);
 // ----------------------------------------------------------------
 
 const INPUT_FOLDER = join(__dirname, '..', 'packages', 'iconoir', 'icons');
-const ICONS_OUTPUT_FOLDER = join(__dirname, '..', 'src', 'lib', 'iconoir');
+const LIB_FOLDER = join(__dirname, '..', 'src', 'lib');
+const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'iconoir');
 const INDEX_FILE = join(__dirname, '..', 'src', 'lib', 'index.ts');
 const DIST_FOLDER = join(__dirname, '..', 'dist');
 
@@ -19,6 +20,7 @@ let counter = 0;
 
 function main() {
 	resetAll(INDEX_FILE, ICONS_OUTPUT_FOLDER, DIST_FOLDER);
+	makeDir(LIB_FOLDER);
 	makeDir(ICONS_OUTPUT_FOLDER);
 	generateIconsDataset();
 	console.info('\nIcons counter = ' + counter + '\n');
