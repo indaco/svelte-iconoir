@@ -13,9 +13,9 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		package: {
-			dir: 'dist'
-		}
-	}
+			dir: 'dist',
+		},
+	},
 };
 
 export default config;
