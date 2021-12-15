@@ -36,7 +36,9 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import { ListIcon, SunLightIcon } from '@indaco/svelte-iconoir';
+ import { SunLightIcon } from '@indaco/svelte-iconoir';
+ // use THIS approach for production
+ import ListIcon from '@indaco/svelte-iconoir/icons/ListIcon.svelte';
 </script>
 
 <ListIcon />
@@ -57,7 +59,7 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import { View360Icon } from '@indaco/svelte-iconoir';
+ import View360Icon from '@indaco/svelte-iconoir/icons/View360Icon.svelte';
 </script>
 
 <View360Icon
@@ -69,7 +71,7 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import { ActivityIcon } from '@indaco/svelte-iconoir';
+ import ActivityIcon from '@indaco/svelte-iconoir/icons/ActivityIcon.svelte';
 </script>
 
 <ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
