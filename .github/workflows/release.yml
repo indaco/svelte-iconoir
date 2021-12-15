@@ -22,11 +22,20 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            - name: Generates the icons set & build the package
+            - name: Generates the icons components
+              run: npm run generate:icons
+
+            - name: Run Prettier format
+              run: npm run format
+
+            - name: Run Prettier lint
+              run: npm run lint
+
+            - name: Build the package
               run: npm run package
 
             - name: Publish to NPM Packages
-              run: npm publish --access public
+              run: npm publish --access public ./dist
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
 
