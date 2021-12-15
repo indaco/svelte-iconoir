@@ -28,28 +28,6 @@ npm install @indaco/svelte-iconoir
 yarn add @indaco/svelte-iconoir
 ```
 
-## Configuration
-
-### SvelteKit
-
-Add the following to the `svelte.config.js` file to optimize and bundle all the used icons in a single file when **build** your project with `svelte-kit build`.
-
-```javascript
-const config = {
- // ...
- kit: {
-  // ...
-  vite: {
-   // ...
-   optimizeDeps: {
-    include: ['@indaco/svelte-iconoir']
-   }
-  }
- }
-};
-export default config;
-```
-
 ## Usage Examples
 
 Each icon is available to be used/imported following the **CamelCase** notation.
@@ -58,13 +36,12 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import { List, SunLight } from '@indaco/svelte-iconoir';
- import Iconoir from '@indaco/svelte-iconoir/Iconoir.svelte';
+ import { ListIcon, SunLightIcon } from '@indaco/svelte-iconoir';
 </script>
 
-<Iconoir icon="{List}" />
+<ListIcon />
 
-<Iconoir icon="{SunLight}" class="roundedColor" />
+<SunLightIcon class="roundedColor" />
 
 <style>
  .roundedColor {
@@ -80,26 +57,22 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import { View360 } from '@indaco/svelte-iconoir';
- import Iconoir from '@indaco/svelte-iconoir/Iconoir.svelte';
+ import { View360Icon } from '@indaco/svelte-iconoir';
 </script>
 
-<Iconoir
- icon="{View360}"
+<View360Icon
  style="background-color: green; padding: 4px; border-radius: 9999px;"
- color="#ffffff"
-/>
+ color="#ffffff" />
 ```
 
 ### 3. With Tailwind CSS
 
 ```html
 <script>
- import { Activity } from '@indaco/svelte-iconoir';
- import Iconoir from '@indaco/svelte-iconoir/Iconoir.svelte';
+ import { ActivityIcon } from '@indaco/svelte-iconoir';
 </script>
 
-<Iconoir icon="{Activity}" class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
+<ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
 ```
 
 ## Properties
