@@ -1,20 +1,9 @@
 {
 	"name": "@indaco/svelte-iconoir",
-	"version": "2.0.3",
 	"description": "Iconoir SVG icons to SvelteKit.",
-	"svelte": "index.js",
-	"scripts": {
-		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
-		"package": "npm run generate:icons && svelte-kit package",
-		"preview": "svelte-kit preview",
-		"generate:icons": "npm run clean && node scripts/buildIconsDataset.mjs",
-		"clean": "node scripts/cleanAll.mjs",
-		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore ."
-	},
+	"version": "2.0.5",
+	"author": "indaco <github@mircoveltri.me>",
+	"license": "MIT",
 	"keywords": [
 		"svelte",
 		"sveltekit",
@@ -23,28 +12,43 @@
 		"icons-set",
 		"svg-icons"
 	],
-	"author": "indaco <github@mircoveltri.me>",
-	"license": "MIT",
+	"svelte": "index.js",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"package": "svelte-kit package",
+		"preview": "svelte-kit preview",
+		"generate:icons": "npm run clean && node scripts/buildIconsDataset.mjs",
+		"clean": "node scripts/cleanAll.mjs",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+		"format": "prettier --ignore-path .prettierignore --write --plugin-search-dir=. .",
+		"lint": "prettier --ignore-path .prettierignore  --check --plugin-search-dir=. . && eslint --ignore-path .gitignore ."
+	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"@typescript-eslint/eslint-plugin": "^4.31.1",
-		"@typescript-eslint/parser": "^4.31.1",
-		"eslint": "^7.32.0",
+		"@typescript-eslint/eslint-plugin": "^5.7.0",
+		"@typescript-eslint/parser": "^5.7.0",
+		"eslint": "^8.4.1",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
-		"prettier": "^2.4.1",
-		"prettier-plugin-svelte": "^2.4.0",
-		"svelte": "^3.44.0",
-		"svelte-check": "^2.2.6",
-		"svelte-preprocess": "^4.9.4",
+		"prettier": "^2.5.1",
+		"prettier-plugin-svelte": "^2.5.1",
+		"svelte": "^3.44.3",
+		"svelte-check": "^2.2.10",
+		"svelte-preprocess": "^4.10.0",
 		"svelte2tsx": "^0.4.11",
 		"svg-parser": "^2.0.4",
 		"tslib": "^2.3.1",
-		"typescript": "^4.4.3"
+		"typescript": "^4.5.4"
 	},
-	"type": "module",
-	"exports": {
-		"./Iconoir.svelte": "./Iconoir.svelte"
-	}
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/indaco/svelte-iconoir"
+	},
+	"bugs": {
+		"url": "https://github.com/indaco/svelte-iconoir/issues"
+	},
+	"type": "module"
 }
