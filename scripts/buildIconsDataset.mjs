@@ -58,7 +58,8 @@ function makeIconComponent(outputFolder, iconObj) {
 		iconObj.name +
 		` icon';
 	export let size = '1.5em';
-	export let color = 'currentColor';
+	export let color = '';
+	$: fillColor = color != '' ? color : 'none'
 </script>
 
 <svg
@@ -67,8 +68,7 @@ function makeIconComponent(outputFolder, iconObj) {
 	height={size}
 	stroke-width={1.5}
 	viewBox="0 0 24 24"
-	fill="none"
-	{color}
+	fill={fillColor}
 	aria-hidden="true"
 	aria-labelledby={altText}
 	class={$$props.class}
