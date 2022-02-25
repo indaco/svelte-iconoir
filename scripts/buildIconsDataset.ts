@@ -79,7 +79,7 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	})
 
 	let txt =`<script>
-	let altText = '${iconObj.name} icon';
+	export let altText = '${iconObj.name} icon';
 	export let size = '1.5em';
 	export let color = '';
 	$: fillColor = color != '' ? color : 'none'

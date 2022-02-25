@@ -28,7 +28,7 @@ npm install @indaco/svelte-iconoir
 yarn add @indaco/svelte-iconoir
 ```
 
-## Usage Examples
+## Styling Examples
 
 Each icon is available to be used/imported following the **CamelCase** notation.
 
@@ -75,6 +75,18 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 </script>
 
 <ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
+```
+
+## Event Forwarding
+
+You can also override the `click, dblclick` events on an element.
+
+```html
+<script>
+ import ActivityIcon from '@indaco/svelte-iconoir/icons/ActivityIcon.svelte';
+</script>
+
+<ActivityIcon class="p-1 rounded-full border-6 bg-blue-300" on:click={() => alert("hi!")} size="2.5em" />
 ```
 
 ## Properties
