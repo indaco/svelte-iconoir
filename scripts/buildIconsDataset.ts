@@ -1,29 +1,38 @@
-import pkg from 'svg-parser';
-const { parse } = pkg;
+import { parse } from 'svg-parser';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import cliProgress from "cli-progress"
 import { join, dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // ----------------------------------------------------------------
 
-const INPUT_FOLDER = join(__dirname, '..', 'packages', 'iconoir', 'icons');
-const LIB_FOLDER = join(__dirname, '..', 'src', 'lib');
+const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons');
+const LIB_FOLDER = join(__dirname, '..', '..', 'src', 'lib');
 const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'icons');
-const INDEX_FILE = join(__dirname, '..', 'src', 'lib', 'index.ts');
-const DIST_FOLDER = join(__dirname, '..', 'dist');
+const INDEX_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
 
 let counter = 0;
+
+// create a new progress bar instance and use shades_classic theme
+const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+const files = fs.readdirSync(INPUT_FOLDER)
 
 // ----------------------------------------------------------------
 
 function main() {
-	resetAll(INDEX_FILE, ICONS_OUTPUT_FOLDER, DIST_FOLDER);
 	makeDir(LIB_FOLDER);
 	makeDir(ICONS_OUTPUT_FOLDER);
+
+	console.log("\nGenerating files...")
+
+	progressBar.start(files.length, 0, {
+		filename: "N/A"
+	})
+
 	generateIconsDataset();
-	console.info('\nIcons counter = ' + counter + '\n');
+	progressBar.stop();
 }
 
 function generateIconsDataset() {
@@ -31,11 +40,13 @@ function generateIconsDataset() {
 		const filename = file.split('.').slice(0, -1).join('.');
 		const iconData = fs.readFileSync(join(INPUT_FOLDER, file), 'utf8').toString();
 		const parsed = parse(iconData);
-		var icon = {};
-		icon['name'] = filename;
+		let icon = {
+			name: filename
+		};
+
 		parsed.children.forEach(function (item) {
 			icon['data'] = [];
-			item.children.forEach(function (child) {
+			item["children"].forEach(function (child) {
 				icon['data'].push(child.properties);
 			});
 		});
@@ -49,14 +60,12 @@ function generateIconsDataset() {
 
 function makeIconComponent(outputFolder, iconObj) {
 	const iconFilename = _makeIconNameString(iconObj.name);
-	console.info('\n* Saving ' + iconFilename + '.svelte to ' + outputFolder);
+	progressBar.update(counter + 1, {
+		filename: `${iconFilename}.svelte`
+	})
 
-	let txt =
-		`
-<script>
-	let altText = '` +
-		iconObj.name +
-		` icon';
+	let txt =`<script>
+	let altText = '${iconObj.name} icon';
 	export let size = '1.5em';
 	export let color = '';
 	$: fillColor = color != '' ? color : 'none'
@@ -73,15 +82,10 @@ function makeIconComponent(outputFolder, iconObj) {
 	aria-labelledby={altText}
 	class={$$props.class}
 	style={$$props.style}
->` +
-		buildIconDataString(iconObj.data).join(' ') +
-		`</svg>`;
+	on:click
+>${buildIconDataString(iconObj.data).join(' ')}</svg>`;
 
-	fs.writeFileSync(join(outputFolder, iconFilename + '.svelte'), txt, (err) => {
-		if (err) {
-			throw err;
-		}
-	});
+	fs.writeFileSync(join(outputFolder, iconFilename + '.svelte'), txt);
 }
 
 function buildIconDataString(iconData) {
@@ -97,47 +101,39 @@ function buildIconDataString(iconData) {
 	return data;
 }
 
-function appendToExports(filename) {
+function appendToExports(filename: string) {
 	const iconFilename = _makeIconNameString(filename);
 	const exportString = _makeExportEntryString(iconFilename);
 
-	console.info('* Add ' + iconFilename + ' as entry to the module exports.');
-	fs.appendFileSync(INDEX_FILE, exportString, (err) => {
-		if (err) {
-			throw err;
-		}
-	});
+	progressBar.update(counter + 1, {
+		filename: `${iconFilename}.svelte`
+	})
+	fs.appendFileSync(INDEX_FILE, exportString);
 }
 
 // ----------------------------------------------------------------
 
-function _toCamelCase(myStr) {
-	let text = myStr.replace(/-([a-z0-9])/g, function (g) {
-		return g[1].toUpperCase();
-	});
+function _toCamelCase(str: string) {
+	let text = str.replace(/-([a-z0-9])/g, g => g[1].toUpperCase());
 	return text.replaceAll(/ /g, '');
 }
 
-function _capitalizeFirstLetter(string) {
+function _capitalizeFirstLetter(string: string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function _makeIconNameString(filename) {
+function _makeIconNameString(filename: string) {
 	const camelCase = _toCamelCase(filename);
 
 	switch (camelCase) {
 		case '1stMedal':
 			return 'Medal1stIcon';
-			break;
 		case '360View':
 			return 'View360Icon';
-			break;
 		case '4kDisplay':
 			return 'Display4kIcon';
-			break;
 		case '4x4Cell':
 			return 'Cell4x4Icon';
-			break;
 		case 'github':
 			return 'GitHubIcon';
 		case 'githubOutline':
@@ -152,51 +148,18 @@ function _makeIconNameString(filename) {
 			return 'YouTubeIcon';
 		default:
 			return _capitalizeFirstLetter(camelCase) + 'Icon';
-			break;
 	}
 }
 
-function _makeExportEntryString(iconFilename) {
-	return (
-		`
-	export { default as ` +
-		iconFilename +
-		`} from './icons/` +
-		iconFilename +
-		`.svelte';
-	`
-	);
+function _makeExportEntryString(iconFilename: string) {
+	return `export { default as ${iconFilename} } from './icons/${iconFilename}.svelte';\n`;
 }
 
 // ----------------------------------------------------------------
-function resetAll(indexFilepath, outputFolder, distFolder) {
-	_removeIndexFile(indexFilepath);
-	_removeFolder(outputFolder);
-	_removeFolder(distFolder);
-}
 
-function makeDir(pathToDir) {
+function makeDir(pathToDir: string) {
 	if (!fs.existsSync(pathToDir)) {
 		fs.mkdirSync(pathToDir);
-	}
-}
-
-function _removeIndexFile(filePath) {
-	if (fs.existsSync(filePath)) {
-		console.log('File exists. Deleting now ...');
-		try {
-			fs.rmSync(filePath, { force: true });
-		} catch (err) {
-			console.error(err);
-		}
-	} else {
-		console.log('File not found, so not deleting.');
-	}
-}
-
-function _removeFolder(pathToFolder) {
-	if (fs.existsSync(pathToFolder)) {
-		fs.rmSync(pathToFolder, { recursive: true, force: true });
 	}
 }
 
