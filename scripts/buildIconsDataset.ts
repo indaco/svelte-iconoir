@@ -1,5 +1,5 @@
-import { parse } from 'svg-parser';
-import fs from 'fs';
+import { ElementNode, parse } from 'svg-parser';
+import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 import cliProgress from "cli-progress"
 import { join, dirname } from 'path';
@@ -16,14 +16,14 @@ const INDEX_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
 let counter = 0;
 
 // create a new progress bar instance and use shades_classic theme
-const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-const files = fs.readdirSync(INPUT_FOLDER)
+const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_grey);
+const files = await fs.readdir(INPUT_FOLDER)
 
 // ----------------------------------------------------------------
 
-function main() {
-	makeDir(LIB_FOLDER);
-	makeDir(ICONS_OUTPUT_FOLDER);
+async function main() {
+	await makeDir(LIB_FOLDER);
+	await makeDir(ICONS_OUTPUT_FOLDER);
 
 	console.log("\nGenerating files...")
 
@@ -31,34 +31,48 @@ function main() {
 		filename: "N/A"
 	})
 
-	generateIconsDataset();
+	await generateIconsDataset();
 	progressBar.stop();
 }
 
-function generateIconsDataset() {
-	fs.readdirSync(INPUT_FOLDER).forEach((file) => {
+interface Icon {
+	name: string,
+	data?: Record<string, string | number>[]
+}
+
+async function generateIconsDataset() {
+	const files = await fs.readdir(INPUT_FOLDER)
+	
+	files.forEach(async file => {
 		const filename = file.split('.').slice(0, -1).join('.');
-		const iconData = fs.readFileSync(join(INPUT_FOLDER, file), 'utf8').toString();
-		const parsed = parse(iconData);
-		let icon = {
+		const iconData = await fs.readFile(join(INPUT_FOLDER, file), 'utf8');
+		const parsed = parse(iconData.toString());
+
+		let icon: Icon = {
 			name: filename
 		};
 
-		parsed.children.forEach(function (item) {
-			icon['data'] = [];
-			item["children"].forEach(function (child) {
-				icon['data'].push(child.properties);
+		parsed.children.forEach(item => {
+
+			if ((item as ElementNode).children === undefined) return
+
+			icon.data = [];
+			(item as ElementNode).children.forEach(function (child) {
+
+				if ((child as ElementNode).properties === undefined) return
+
+				icon.data.push((child as ElementNode).properties);
 			});
 		});
 		// generate svelte component for each icon
-		makeIconComponent(ICONS_OUTPUT_FOLDER, icon);
+		await makeIconComponent(ICONS_OUTPUT_FOLDER, icon);
 		// append an entry to index.js file
-		appendToExports(filename);
+		await appendToExports(filename);
 		counter++;
 	});
 }
 
-function makeIconComponent(outputFolder, iconObj) {
+async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	const iconFilename = _makeIconNameString(iconObj.name);
 	progressBar.update(counter + 1, {
 		filename: `${iconFilename}.svelte`
@@ -83,32 +97,28 @@ function makeIconComponent(outputFolder, iconObj) {
 	class={$$props.class}
 	style={$$props.style}
 	on:click
->${buildIconDataString(iconObj.data).join(' ')}</svg>`;
+	on:dblclick
+>${buildIconDataString(iconObj).join(' ')}</svg>`;
 
-	fs.writeFileSync(join(outputFolder, iconFilename + '.svelte'), txt);
+	await fs.writeFile(join(outputFolder, iconFilename + '.svelte'), txt);
 }
 
-function buildIconDataString(iconData) {
-	let data = [];
-	iconData.forEach((item) => {
-		let path = '<path ';
-		Object.entries(item).forEach(([key, value]) => {
-			path += `${key}="${value}" `;
-		});
-		path += '/>';
-		data.push(path);
-	});
-	return data;
+function buildIconDataString(icon: Icon): string[] {
+	// <path (key="value"...)/>
+	return icon.data.map(item => `<path ${
+		Object.entries(item).map(([key, value]) => `${key}="${value}" `).join("")
+	}/>`);
 }
 
-function appendToExports(filename: string) {
+async function appendToExports(filename: string) {
 	const iconFilename = _makeIconNameString(filename);
 	const exportString = _makeExportEntryString(iconFilename);
 
 	progressBar.update(counter + 1, {
 		filename: `${iconFilename}.svelte`
 	})
-	fs.appendFileSync(INDEX_FILE, exportString);
+
+	await fs.appendFile(INDEX_FILE, exportString);
 }
 
 // ----------------------------------------------------------------
@@ -157,12 +167,10 @@ function _makeExportEntryString(iconFilename: string) {
 
 // ----------------------------------------------------------------
 
-function makeDir(pathToDir: string) {
-	if (!fs.existsSync(pathToDir)) {
-		fs.mkdirSync(pathToDir);
-	}
+async function makeDir(pathToDir: string) {
+	fs.mkdir(pathToDir, { recursive: true });
 }
 
 // ----------------------------------------------------------------
 
-main();
+await main();
