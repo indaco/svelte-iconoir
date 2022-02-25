@@ -65,7 +65,7 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
+dist
 # Local History for Visual Studio Code
 .history/
 
@@ -78,8 +78,10 @@ Temporary Items
 $RECYCLE.BIN/
 
 # Directories
-src/lib/components
+src/lib/
 
 # Files
 src/lib/index.ts
 packages/iconoir
+package-lock.json
+.svelte-kit
