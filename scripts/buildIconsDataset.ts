@@ -1,7 +1,7 @@
 import { ElementNode, parse } from 'svg-parser';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
-import cliProgress from "cli-progress"
+import cliProgress from 'cli-progress';
 import { join, dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,7 +17,7 @@ let counter = 0;
 
 // create a new progress bar instance and use shades_classic theme
 const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_grey);
-const files = await fs.readdir(INPUT_FOLDER)
+const files = await fs.readdir(INPUT_FOLDER);
 
 // ----------------------------------------------------------------
 
@@ -25,41 +25,39 @@ async function main() {
 	await makeDir(LIB_FOLDER);
 	await makeDir(ICONS_OUTPUT_FOLDER);
 
-	console.log("\nGenerating files...")
+	console.log('\nGenerating files...');
 
 	progressBar.start(files.length, 0, {
-		filename: "N/A"
-	})
+		filename: 'N/A',
+	});
 
 	await generateIconsDataset();
 	progressBar.stop();
 }
 
 interface Icon {
-	name: string,
-	data?: Record<string, string | number>[]
+	name: string;
+	data?: Record<string, string | number>[];
 }
 
 async function generateIconsDataset() {
-	const files = await fs.readdir(INPUT_FOLDER)
-	
-	files.forEach(async file => {
+	const files = await fs.readdir(INPUT_FOLDER);
+
+	files.forEach(async (file) => {
 		const filename = file.split('.').slice(0, -1).join('.');
 		const iconData = await fs.readFile(join(INPUT_FOLDER, file), 'utf8');
 		const parsed = parse(iconData.toString());
 
-		let icon: Icon = {
-			name: filename
+		const icon: Icon = {
+			name: filename,
 		};
 
-		parsed.children.forEach(item => {
-
-			if ((item as ElementNode).children === undefined) return
+		parsed.children.forEach((item) => {
+			if ((item as ElementNode).children === undefined) return;
 
 			icon.data = [];
 			(item as ElementNode).children.forEach(function (child) {
-
-				if ((child as ElementNode).properties === undefined) return
+				if ((child as ElementNode).properties === undefined) return;
 
 				icon.data.push((child as ElementNode).properties);
 			});
@@ -75,10 +73,10 @@ async function generateIconsDataset() {
 async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	const iconFilename = _makeIconNameString(iconObj.name);
 	progressBar.update(counter + 1, {
-		filename: `${iconFilename}.svelte`
-	})
+		filename: `${iconFilename}.svelte`,
+	});
 
-	let txt =`<script>
+	const txt = `<script>
 	export let altText = '${iconObj.name} icon';
 	export let size = '1.5em';
 	export let color = '';
@@ -105,9 +103,12 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 
 function buildIconDataString(icon: Icon): string[] {
 	// <path (key="value"...)/>
-	return icon.data.map(item => `<path ${
-		Object.entries(item).map(([key, value]) => `${key}="${value}" `).join("")
-	}/>`);
+	return icon.data.map(
+		(item) =>
+			`<path ${Object.entries(item)
+				.map(([key, value]) => `${key}="${value}" `)
+				.join('')}/>`,
+	);
 }
 
 async function appendToExports(filename: string) {
@@ -115,8 +116,8 @@ async function appendToExports(filename: string) {
 	const exportString = _makeExportEntryString(iconFilename);
 
 	progressBar.update(counter + 1, {
-		filename: `${iconFilename}.svelte`
-	})
+		filename: `${iconFilename}.svelte`,
+	});
 
 	await fs.appendFile(INDEX_FILE, exportString);
 }
@@ -124,7 +125,7 @@ async function appendToExports(filename: string) {
 // ----------------------------------------------------------------
 
 function _toCamelCase(str: string) {
-	let text = str.replace(/-([a-z0-9])/g, g => g[1].toUpperCase());
+	const text = str.replace(/-([a-z0-9])/g, (g) => g[1].toUpperCase());
 	return text.replaceAll(/ /g, '');
 }
 

@@ -10,7 +10,11 @@ const LIB_FOLDER = join(__dirname, '..', '..', 'src', 'lib');
 
 // ----------------------------------------------------------------
 
-const fileExists = async (path: string) => fs.access(path, constants.R_OK ).then(() => true).catch(() => false)
+const fileExists = async (path: string) =>
+	fs
+		.access(path, constants.R_OK)
+		.then(() => true)
+		.catch(() => false);
 
 if (await fileExists(LIB_FOLDER)) {
 	console.log(`Removing lib folder...`);
