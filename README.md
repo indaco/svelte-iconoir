@@ -95,7 +95,6 @@ The `Iconoir` component has the following properties to allow you customing the 
 
 | Property | Type   | Required | Description                                                          |
 | :------- | :----- | :------: | :------------------------------------------------------------------- |
-| icon     | Object |   Yes    | Icon data object to render, with 2 properties: name and data).       |
 | alt      | String |    No    | Set the alt attribute on the rendered svg (defaults to icon's name). |
 | size     | String |    No    | Override the icon's size (defaults to 1.5em).                        |
 | color    | String |    No    | Override the icon's colour (defaults to currentColor).               |
