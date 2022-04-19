@@ -141,6 +141,16 @@ function _makeIconNameString(filename: string) {
 			return 'Medal1stIcon';
 		case '360View':
 			return 'View360Icon';
+		case '3dSelectEdge':
+			return 'SelectEdge3DIcon';
+		case '3dSelectFace':
+			return 'SelectFace3DIcon';
+		case '3dSelectPoint':
+			return 'SelectPoint3DIcon';
+		case '3dSelectSolid':
+			return 'SelectSolid3DIcon';
+		case '2x2Cell':
+			return 'Cell2x2Icon';
 		case '4kDisplay':
 			return 'Display4kIcon';
 		case '4x4Cell':
