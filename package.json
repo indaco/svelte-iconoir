@@ -1,7 +1,7 @@
 {
 	"name": "@indaco/svelte-iconoir",
 	"description": "Iconoir SVG icons to SvelteKit.",
-	"version": "2.4.0",
+	"version": "2.5.0",
 	"author": "indaco <github@mircoveltri.me>",
 	"license": "MIT",
 	"keywords": [
