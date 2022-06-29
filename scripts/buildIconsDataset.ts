@@ -149,6 +149,30 @@ function _makeIconNameString(filename: string) {
 			return 'SelectPoint3DIcon';
 		case '3dSelectSolid':
 			return 'SelectSolid3DIcon';
+		case '3dAddHole':
+			return 'AddHole3DIcon';
+		case '3dArcCenterPt':
+			return 'ArcCenterPt3DIcon';
+		case '3dArc':
+			return 'Arc3DIcon';
+		case '3dCenterBox':
+			return 'CenterBox3DIcon';
+		case '3dBridge':
+			return 'Bridge3DIcon';
+		case '3dEllipse':
+			return 'Ellipse3DIcon';
+		case '3dPtBox':
+			return 'PtBox3DIcon';
+		case '3dRectCornerToCorner':
+			return 'RectCornerToCorner3DIcon';
+		case '3dEllipseThreePts':
+			return 'EllipseThreePts3DIcon';
+		case '3dRectFromCenter':
+			return 'RectFromCenter3DIcon';
+		case '3dThreePtsBox':
+			return 'ThreePtsBoxeDIcon';
+		case '3dRectThreePts':
+			return 'RectThreePts3DIcon';
 		case '2x2Cell':
 			return 'Cell2x2Icon';
 		case '4kDisplay':
