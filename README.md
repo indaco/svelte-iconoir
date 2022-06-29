@@ -9,6 +9,8 @@
 
 # Svelte Iconoir
 
+> `svelte-iconoi@2.5.0` matches `iconoir@5.0.0`
+
 ## Description
 
 This package provide the entire [iconoir](https://github.com/lucaburgio/iconoir) set (1000+ SVG icons) to be used with SvelteKit. It is based on the official [iconoir](https://github.com/lucaburgio/iconoir) project.
