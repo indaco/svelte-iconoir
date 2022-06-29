@@ -3,52 +3,52 @@ on:
     release:
         types: [created]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  submodules: recursive
 
-      - name: Setup .npmrc file to publish to npm
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
+            - name: Setup .npmrc file to publish to npm
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+                  registry-url: 'https://registry.npmjs.org'
 
-      - uses: pnpm/action-setup@v2.1.0
-        with:
-          version: latest
-          run_install: true
+            - uses: pnpm/action-setup@v2.1.0
+              with:
+                  version: latest
+                  run_install: false
 
-      - name: Generates the icons components
-        run: pnpm generate:icons
+            - name: Generates the icons components
+              run: pnpm generate:icons
 
-      - name: Run Prettier format
-        run: pnpm format
+            - name: Run Prettier format
+              run: pnpm format
 
-      - name: Run Prettier lint
-        run: pnpm lint
+            - name: Run Prettier lint
+              run: pnpm lint
 
-      - name: Build the package
-        run: pnpm package
+            - name: Build the package
+              run: pnpm package
 
-      - name: Publish to NPM Packages
-        run: npm publish --access public ./dist
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
+            - name: Publish to NPM Packages
+              run: npm publish --access public ./dist
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
 
-      - name: Setup .npmrc file to publish to GitHub Packages
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.x'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@indaco'
+            - name: Setup .npmrc file to publish to GitHub Packages
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@indaco'
 
-      - name: Publish to GitHub Packages
-        run: npm publish ./dist
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Publish to GitHub Packages
+              run: npm publish ./dist
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
