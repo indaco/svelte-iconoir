@@ -19,10 +19,11 @@ jobs:
                   node-version: '16.x'
                   registry-url: 'https://registry.npmjs.org'
 
-            - uses: pnpm/action-setup@v2.1.0
+            - uses: pnpm/action-setup@v2.2.2
               with:
                   version: latest
-                  run_install: false
+                  run_install: |
+                      - recursive: true
 
             - name: Generates the icons components
               run: pnpm generate:icons
