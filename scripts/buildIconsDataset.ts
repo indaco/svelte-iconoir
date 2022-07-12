@@ -1,4 +1,5 @@
-import { ElementNode, parse } from 'svg-parser';
+import type { ElementNode } from 'svg-parser';
+import { parse } from 'svg-parser';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 import cliProgress from 'cli-progress';
@@ -12,6 +13,7 @@ const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons')
 const LIB_FOLDER = join(__dirname, '..', '..', 'src', 'lib');
 const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'icons');
 const INDEX_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
+const DTS_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.d.ts');
 
 let counter = 0;
 
@@ -120,6 +122,7 @@ async function appendToExports(filename: string) {
 	});
 
 	await fs.appendFile(INDEX_FILE, exportString);
+	await fs.appendFile(DTS_FILE, exportString);
 }
 
 // ----------------------------------------------------------------
