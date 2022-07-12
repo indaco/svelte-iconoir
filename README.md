@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@2.5.0` matches `iconoir@5.0.0`
+> `svelte-iconoi@2.5.1` matches `iconoir@5.1.4`
 
 ## Description
 
@@ -102,6 +102,26 @@ The `Iconoir` component has the following properties to allow you customing the 
 | color    | String |    No    | Override the icon's colour (defaults to currentColor).               |
 | style    | String |    No    | Set the style attribute on the rendered svg.                         |
 | class    | String |    No    | Set the class attribute on the rendered svg.                         |
+
+## Dev Flow
+
+```bash
+git clone https://github.com/indaco/svelte-iconoir.git
+
+cd svelte-iconoir
+
+# Install all dependencies
+pnpm install # (or npm, yarn)
+
+# To generate .svelte-kit folder with tsconfig.json
+pnpm dev
+
+# Generate Svelte components for each icon
+pnpm generate:icons
+
+# Package
+pnpm package
+```
 
 ## License
 
