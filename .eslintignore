@@ -1,3 +1,7 @@
 {
-    "ignorePatterns": ["node_modules/**", "src/iconoir/**", "dist/**"],
+	"ignorePatterns": [
+		"node_modules/**",
+		"src/iconoir/**",
+		"dist/**"
+	]
 }

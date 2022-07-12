@@ -66,6 +66,8 @@ Temporary Items
 !.vscode/extensions.json
 *.code-workspace
 dist
+build
+
 # Local History for Visual Studio Code
 .history/
 
