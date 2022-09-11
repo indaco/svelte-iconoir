@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@2.5.1` matches `iconoir@5.1.4`
+> `svelte-iconoi@2.6.0` matches `iconoir@5.3.0`
 
 ## Description
 
@@ -112,9 +112,6 @@ cd svelte-iconoir
 
 # Install all dependencies
 pnpm install # (or npm, yarn)
-
-# To generate .svelte-kit folder with tsconfig.json
-pnpm dev
 
 # Generate Svelte components for each icon
 pnpm generate:icons
