@@ -23,7 +23,7 @@ jobs:
               run: npm install --location=global pnpm
 
             - name: Install all dependencies
-              run: pnpm install
+              run: pnpm install --no-frozen-lockfile
 
             - name: Generates the icons components
               run: pnpm generate:icons
