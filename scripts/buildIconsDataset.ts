@@ -61,7 +61,10 @@ async function generateIconsDataset() {
 			(item as ElementNode).children.forEach(function (child) {
 				if ((child as ElementNode).properties === undefined) return;
 
-				icon.data.push((child as ElementNode).properties);
+				const c = child as ElementNode;
+				if (icon.data != undefined && child != undefined && c.properties != undefined) {
+					icon.data.push(c.properties);
+				}
 			});
 		});
 		// generate svelte component for each icon
@@ -105,12 +108,15 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 
 function buildIconDataString(icon: Icon): string[] {
 	// <path (key="value"...)/>
-	return icon.data.map(
-		(item) =>
-			`<path ${Object.entries(item)
-				.map(([key, value]) => `${key}="${value}" `)
-				.join('')}/>`,
-	);
+	if (icon.data != undefined) {
+		return icon.data.map(
+			(item) =>
+				`<path ${Object.entries(item)
+					.map(([key, value]) => `${key}="${value}" `)
+					.join('')}/>`,
+		);
+	}
+	return [];
 }
 
 async function appendToExports(filename: string) {
