@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@2.6.0` matches `iconoir@5.3.0`
+> `svelte-iconoi@2.6.1` matches `iconoir@5.3.0`
 
 ## Description
 
@@ -28,6 +28,16 @@ npm install @indaco/svelte-iconoir
 
 # yarn
 yarn add @indaco/svelte-iconoir
+```
+
+## Usage
+
+To prevent the icon package from being externalized for SSR, add the following to the `vite.config.js` file
+
+```javascript
+...
+ssr: { noExternal: ['@indaco/svelte-iconoir/**'] }
+...
 ```
 
 ## Styling Examples
