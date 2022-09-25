@@ -19,7 +19,6 @@ let counter = 0;
 
 // create a new progress bar instance and use shades_classic theme
 const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_grey);
-const files = await fs.readdir(INPUT_FOLDER);
 
 // ----------------------------------------------------------------
 
@@ -29,12 +28,7 @@ async function main() {
 
 	console.log('\nGenerating files...');
 
-	progressBar.start(files.length, 0, {
-		filename: 'N/A',
-	});
-
 	await generateIconsDataset();
-	progressBar.stop();
 }
 
 interface Icon {
@@ -44,6 +38,10 @@ interface Icon {
 
 async function generateIconsDataset() {
 	const files = await fs.readdir(INPUT_FOLDER);
+
+	progressBar.start(files.length + 1, 0, {
+		filename: 'N/A',
+	});
 
 	files.forEach(async (file) => {
 		const filename = file.split('.').slice(0, -1).join('.');
@@ -67,11 +65,13 @@ async function generateIconsDataset() {
 				}
 			});
 		});
+		counter++;
 		// generate svelte component for each icon
 		await makeIconComponent(ICONS_OUTPUT_FOLDER, icon);
 		// append an entry to index.js file
 		await appendToExports(filename);
-		counter++;
+
+		progressBar.stop();
 	});
 }
 
