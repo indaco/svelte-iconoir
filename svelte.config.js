@@ -12,7 +12,7 @@ const config = {
 	},
 	package: {
 		dir: 'dist',
-		emitTypes: true,
+		emitTypes: false,
 	},
 };
 
