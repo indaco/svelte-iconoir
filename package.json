@@ -1,6 +1,6 @@
 {
 	"name": "@indaco/svelte-iconoir",
-	"version": "2.6.1",
+	"version": "2.6.2",
 	"type": "module",
 	"author": "indaco <github@mircoveltri.me>",
 	"description": "Iconoir SVG icons to SvelteKit.",

@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@2.6.1` matches `iconoir@5.3.0`
+> `svelte-iconoi@2.6.2` matches `iconoir@5.3.1`
 
 ## Description
 
@@ -30,16 +30,6 @@ npm install @indaco/svelte-iconoir
 yarn add @indaco/svelte-iconoir
 ```
 
-## Usage
-
-To prevent the icon package from being externalized for SSR, add the following to the `vite.config.js` file
-
-```javascript
-...
-ssr: { noExternal: ['@indaco/svelte-iconoir/**'] }
-...
-```
-
 ## Styling Examples
 
 Each icon is available to be used/imported following the **CamelCase** notation.
@@ -49,7 +39,7 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 ```html
 <script>
  import { SunLightIcon } from '@indaco/svelte-iconoir';
- // use THIS approach for production
+ // or use THIS approach in dev
  import ListIcon from '@indaco/svelte-iconoir/icons/ListIcon.svelte';
 </script>
 
