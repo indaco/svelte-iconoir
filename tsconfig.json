@@ -8,16 +8,7 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strict": true,
-		"outDir": "./build",
-		"rootDir": "."
+		"strict": true
 	},
-	"include": [
-		"src/**/*.d.ts",
-		"scripts/**/*.ts",
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.svelte",
-		"package"
-	]
+	"include": ["scripts/**/*.ts"]
 }

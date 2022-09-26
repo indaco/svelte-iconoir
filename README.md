@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@2.6.2` matches `iconoir@5.3.1`
+> `svelte-iconoi@3.0.0` matches `iconoir@5.3.1`
 
 ## Description
 
@@ -39,8 +39,8 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 ```html
 <script>
  import { SunLightIcon } from '@indaco/svelte-iconoir';
- // or use THIS approach in dev
- import ListIcon from '@indaco/svelte-iconoir/icons/ListIcon.svelte';
+ // to speed up dev server loading, use this
+ import { ListIcon } from '@indaco/svelte-iconoir/icons/ListIcon';
 </script>
 
 <ListIcon />
@@ -61,7 +61,7 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import View360Icon from '@indaco/svelte-iconoir/icons/View360Icon.svelte';
+ import { View360Icon } from '@indaco/svelte-iconoir/icons/View360Icon';
 </script>
 
 <View360Icon
@@ -73,7 +73,7 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 
 ```html
 <script>
- import ActivityIcon from '@indaco/svelte-iconoir/icons/ActivityIcon.svelte';
+ import { ActivityIcon } from '@indaco/svelte-iconoir/icons/ActivityIcon';
 </script>
 
 <ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
@@ -85,7 +85,7 @@ You can also override the `click, dblclick` events on an element.
 
 ```html
 <script>
- import ActivityIcon from '@indaco/svelte-iconoir/icons/ActivityIcon.svelte';
+ import { ActivityIcon } from '@indaco/svelte-iconoir/icons/ActivityIcon';
 </script>
 
 <ActivityIcon class="p-1 rounded-full border-6 bg-blue-300" on:click={() => alert("hi!")} size="2.5em" />
@@ -117,7 +117,7 @@ pnpm install # (or npm, yarn)
 pnpm generate:icons
 
 # Package
-pnpm package
+pnpm build
 ```
 
 ## License
