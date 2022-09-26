@@ -2,13 +2,11 @@
 node_modules
 /build
 /.svelte-kit
-/package
+/packages
+/dist
 .env
 .env.*
 !.env.example
-/static
-/dist
-packages/**
 README.md
 
 # Ignore files for PNPM, NPM and YARN
