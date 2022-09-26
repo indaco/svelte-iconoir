@@ -13,7 +13,6 @@ const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons')
 const LIB_FOLDER = join(__dirname, '..', '..', 'src', 'lib');
 const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'icons');
 const INDEX_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
-const DTS_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.d.ts');
 
 let counter = 0;
 
@@ -26,9 +25,14 @@ async function main() {
 	await makeDir(LIB_FOLDER);
 	await makeDir(ICONS_OUTPUT_FOLDER);
 
-	console.log('\nGenerating files...');
+	console.log('\n* Getting list of all icons...');
+	const files = await fs.readdir(INPUT_FOLDER);
 
-	await generateIconsDataset();
+	console.log('\n* Generating folders tree...');
+	await generateFolderTree(files);
+
+	console.log('\n* Generating icon components...\n');
+	await generateIconsDataset(files);
 }
 
 interface Icon {
@@ -36,11 +40,20 @@ interface Icon {
 	data?: Record<string, string | number>[];
 }
 
-async function generateIconsDataset() {
-	const files = await fs.readdir(INPUT_FOLDER);
+async function generateFolderTree(files: string[]) {
+	files.forEach(async (file) => {
+		const filename = file.split('.').slice(0, -1).join('.');
 
-	progressBar.start(files.length + 1, 0, {
-		filename: 'N/A',
+		const icon: Icon = {
+			name: filename
+		};
+		await makeDir(join(ICONS_OUTPUT_FOLDER, _makeIconNameString(icon.name)));
+	});
+}
+
+async function generateIconsDataset(files: string[]) {
+	progressBar.start(files.length, 0, {
+		filename: 'N/A'
 	});
 
 	files.forEach(async (file) => {
@@ -49,7 +62,7 @@ async function generateIconsDataset() {
 		const parsed = parse(iconData.toString());
 
 		const icon: Icon = {
-			name: filename,
+			name: filename
 		};
 
 		parsed.children.forEach((item) => {
@@ -66,9 +79,12 @@ async function generateIconsDataset() {
 			});
 		});
 		counter++;
+
 		// generate svelte component for each icon
 		await makeIconComponent(ICONS_OUTPUT_FOLDER, icon);
-		// append an entry to index.js file
+		// generate index.ts and index.d.ts files for each icon
+		await makeIconComponentIndex(ICONS_OUTPUT_FOLDER, icon);
+		// append an entry to index.ts file
 		await appendToExports(filename);
 
 		progressBar.stop();
@@ -77,8 +93,9 @@ async function generateIconsDataset() {
 
 async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	const iconFilename = _makeIconNameString(iconObj.name);
-	progressBar.update(counter + 1, {
-		filename: `${iconFilename}.svelte`,
+
+	progressBar.update(counter, {
+		filename: `${iconFilename}.svelte`
 	});
 
 	const txt = `<script>
@@ -103,7 +120,14 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	on:dblclick
 >${buildIconDataString(iconObj).join(' ')}</svg>`;
 
-	await fs.writeFile(join(outputFolder, iconFilename + '.svelte'), txt);
+	await fs.writeFile(join(outputFolder, iconFilename, iconFilename + '.svelte'), txt);
+}
+
+async function makeIconComponentIndex(outputFolder: string, iconObj: Icon) {
+	const iconFilename = _makeIconNameString(iconObj.name);
+	const txt = `export { default as ${iconFilename} } from './${iconFilename}.svelte;'\n`;
+
+	await fs.writeFile(join(outputFolder, iconFilename, 'index.ts'), txt);
 }
 
 function buildIconDataString(icon: Icon): string[] {
@@ -113,7 +137,7 @@ function buildIconDataString(icon: Icon): string[] {
 			(item) =>
 				`<path ${Object.entries(item)
 					.map(([key, value]) => `${key}="${value}" `)
-					.join('')}/>`,
+					.join('')}/>`
 		);
 	}
 	return [];
@@ -123,12 +147,11 @@ async function appendToExports(filename: string) {
 	const iconFilename = _makeIconNameString(filename);
 	const exportString = _makeExportEntryString(iconFilename);
 
-	progressBar.update(counter + 1, {
-		filename: `${iconFilename}.svelte`,
+	progressBar.update(counter, {
+		filename: `${iconFilename}.svelte`
 	});
 
 	await fs.appendFile(INDEX_FILE, exportString);
-	await fs.appendFile(DTS_FILE, exportString);
 }
 
 // ----------------------------------------------------------------
@@ -206,7 +229,7 @@ function _makeIconNameString(filename: string) {
 }
 
 function _makeExportEntryString(iconFilename: string) {
-	return `export { default as ${iconFilename} } from './icons/${iconFilename}.svelte';\n`;
+	return `export { ${iconFilename} } from './icons/${iconFilename}/index.js';\n`;
 }
 
 // ----------------------------------------------------------------

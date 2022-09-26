@@ -8,12 +8,12 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter()
 	},
+
 	package: {
-		dir: 'dist',
-		emitTypes: false,
-	},
+		dir: 'dist'
+	}
 };
 
 export default config;
