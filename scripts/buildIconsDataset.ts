@@ -9,6 +9,13 @@ const __dirname = dirname(__filename);
 
 // ----------------------------------------------------------------
 
+interface Icon {
+	name: string;
+	data?: Record<string, string | number>[];
+}
+
+// ----------------------------------------------------------------
+
 const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons');
 const LIB_FOLDER = join(__dirname, '..', '..', 'src', 'lib');
 const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'icons');
@@ -35,19 +42,11 @@ async function main() {
 	await generateIconsDataset(files);
 }
 
-interface Icon {
-	name: string;
-	data?: Record<string, string | number>[];
-}
-
 async function generateFolderTree(files: string[]) {
 	files.forEach(async (file) => {
 		const filename = file.split('.').slice(0, -1).join('.');
 
-		const icon: Icon = {
-			name: filename
-		};
-		await makeDir(join(ICONS_OUTPUT_FOLDER, _makeIconNameString(icon.name)));
+		await makeDir(join(ICONS_OUTPUT_FOLDER, _makeIconNameString(filename)));
 	});
 }
 
@@ -57,10 +56,10 @@ async function generateIconsDataset(files: string[]) {
 	});
 
 	files.forEach(async (file) => {
-		const filename = file.split('.').slice(0, -1).join('.');
 		const iconData = await fs.readFile(join(INPUT_FOLDER, file), 'utf8');
 		const parsed = parse(iconData.toString());
 
+		const filename = file.split('.').slice(0, -1).join('.');
 		const icon: Icon = {
 			name: filename
 		};
@@ -85,7 +84,7 @@ async function generateIconsDataset(files: string[]) {
 		// generate index.ts and index.d.ts files for each icon
 		await makeIconComponentIndex(ICONS_OUTPUT_FOLDER, icon);
 		// append an entry to index.ts file
-		await appendToExports(filename);
+		await appendToExports(INDEX_FILE, icon);
 
 		progressBar.stop();
 	});
@@ -143,15 +142,15 @@ function buildIconDataString(icon: Icon): string[] {
 	return [];
 }
 
-async function appendToExports(filename: string) {
-	const iconFilename = _makeIconNameString(filename);
+async function appendToExports(filename: string, iconObj: Icon) {
+	const iconFilename = _makeIconNameString(iconObj.name);
 	const exportString = _makeExportEntryString(iconFilename);
 
 	progressBar.update(counter, {
 		filename: `${iconFilename}.svelte`
 	});
 
-	await fs.appendFile(INDEX_FILE, exportString);
+	await fs.appendFile(filename, exportString);
 }
 
 // ----------------------------------------------------------------
