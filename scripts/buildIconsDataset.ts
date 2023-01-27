@@ -124,7 +124,9 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 
 async function makeIconComponentIndex(outputFolder: string, iconObj: Icon) {
 	const iconFilename = _makeIconNameString(iconObj.name);
-	const txt = `export { default as ${iconFilename} } from './${iconFilename}.svelte';\n`;
+	const txt = `import ${iconFilename} from './${iconFilename}.svelte';
+	export { ${iconFilename} };
+	`;
 
 	await fs.writeFile(join(outputFolder, iconFilename, 'index.ts'), txt);
 }
