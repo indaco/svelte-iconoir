@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@3.1.0` matches `iconoir@5.4`
+> `svelte-iconoi@3.2.0` matches `iconoir@6.1`
 
 ## Description
 
@@ -20,17 +20,17 @@ See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 ## Install
 
 ```bash
-# pnpm
-pnpm install @indaco/svelte-iconoir
-
 # npm
 npm install @indaco/svelte-iconoir
+
+# pnpm
+pnpm add @indaco/svelte-iconoir
 
 # yarn
 yarn add @indaco/svelte-iconoir
 ```
 
-## Styling Examples
+## Usage
 
 Each icon is available to be used/imported following the **CamelCase** notation.
 
@@ -79,6 +79,18 @@ Each icon is available to be used/imported following the **CamelCase** notation.
 <ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
 ```
 
+## Properties
+
+The `Iconoir` component has the following properties to allow you customing the rendered svg:
+
+| Property | Type   | Required | Default           | Description                                 |
+| :------- | :----- | :------: | :---------------- | :------------------------------------------ |
+| alt      | String |    No    | same as icon name | Set the alt attribute on the rendered svg   |
+| size     | String |    No    | `1.5em`           | Set the icon's size                         |
+| color    | String |    No    | `currentColor`    | Set the icon's colour                       |
+| style    | String |    No    |                   | Set the style attribute on the rendered svg |
+| class    | String |    No    |                   | Set the class attribute on the rendered svg |
+
 ## Event Forwarding
 
 You can also override the `click, dblclick` events on an element.
@@ -90,18 +102,6 @@ You can also override the `click, dblclick` events on an element.
 
 <ActivityIcon class="p-1 rounded-full border-6 bg-blue-300" on:click={() => alert("hi!")} size="2.5em" />
 ```
-
-## Properties
-
-The `Iconoir` component has the following properties to allow you customing the rendered svg:
-
-| Property | Type   | Required | Description                                                          |
-| :------- | :----- | :------: | :------------------------------------------------------------------- |
-| alt      | String |    No    | Set the alt attribute on the rendered svg (defaults to icon's name). |
-| size     | String |    No    | Override the icon's size (defaults to 1.5em).                        |
-| color    | String |    No    | Override the icon's colour (defaults to currentColor).               |
-| style    | String |    No    | Set the style attribute on the rendered svg.                         |
-| class    | String |    No    | Set the class attribute on the rendered svg.                         |
 
 ## Dev Flow
 
