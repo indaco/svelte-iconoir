@@ -9,7 +9,7 @@
 
 # Svelte Iconoir
 
-> `svelte-iconoi@3.3.0` matches `iconoir@6.2.0`
+> `svelte-iconoi@3.3.1` matches `iconoir@6.2.1`
 
 ## Description
 
