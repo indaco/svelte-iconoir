@@ -3,6 +3,7 @@ import { parse } from 'svg-parser';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 import cliProgress from 'cli-progress';
+import pc from 'picocolors';
 import { join, dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,13 +33,13 @@ async function main() {
 	await makeDir(LIB_FOLDER);
 	await makeDir(ICONS_OUTPUT_FOLDER);
 
-	console.log('\n* Getting list of all icons...');
+	console.log(pc.magenta('\n* Getting list of all icons...\n'));
 	const files = await fs.readdir(INPUT_FOLDER);
 
-	console.log('\n* Generating folders tree...');
+	console.log(pc.magenta('* Generating folders tree...\n'));
 	await generateFolderTree(files);
 
-	console.log('\n* Generating icon components...\n');
+	console.log(pc.magenta('* Generating icon components...\n'));
 	await generateIconsDataset(files);
 }
 
