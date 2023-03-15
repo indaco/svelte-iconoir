@@ -1,10 +1,11 @@
 import type { ElementNode } from 'svg-parser';
 import { parse } from 'svg-parser';
-import fs from 'fs/promises';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
+import { join, dirname } from 'node:path';
+import { promises as fsp } from 'node:fs';
 import cliProgress from 'cli-progress';
 import pc from 'picocolors';
-import { join, dirname } from 'path';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -34,7 +35,7 @@ async function main() {
 	await makeDir(ICONS_OUTPUT_FOLDER);
 
 	console.log(pc.magenta('\n* Getting list of all icons...\n'));
-	const files = await fs.readdir(INPUT_FOLDER);
+	const files = await fsp.readdir(INPUT_FOLDER);
 
 	console.log(pc.magenta('* Generating folders tree...\n'));
 	await generateFolderTree(files);
@@ -57,7 +58,7 @@ async function generateIconsDataset(files: string[]) {
 	});
 
 	files.forEach(async (file) => {
-		const iconData = await fs.readFile(join(INPUT_FOLDER, file), 'utf8');
+		const iconData = await fsp.readFile(join(INPUT_FOLDER, file), 'utf8');
 		const parsed = parse(iconData.toString());
 
 		const filename = file.split('.').slice(0, -1).join('.');
@@ -120,7 +121,7 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	on:dblclick
 >${buildIconDataString(iconObj).join(' ')}</svg>`;
 
-	await fs.writeFile(join(outputFolder, iconFilename, iconFilename + '.svelte'), txt);
+	await fsp.writeFile(join(outputFolder, iconFilename, iconFilename + '.svelte'), txt);
 }
 
 async function makeIconComponentIndex(outputFolder: string, iconObj: Icon) {
@@ -129,7 +130,7 @@ async function makeIconComponentIndex(outputFolder: string, iconObj: Icon) {
 	export { ${iconFilename} };
 	`;
 
-	await fs.writeFile(join(outputFolder, iconFilename, 'index.ts'), txt);
+	await fsp.writeFile(join(outputFolder, iconFilename, 'index.ts'), txt);
 }
 
 function buildIconDataString(icon: Icon): string[] {
@@ -153,7 +154,7 @@ async function appendToExports(filename: string, iconObj: Icon) {
 		filename: `${iconFilename}.svelte`
 	});
 
-	await fs.appendFile(filename, exportString);
+	await fsp.appendFile(filename, exportString);
 }
 
 // ----------------------------------------------------------------
@@ -237,7 +238,7 @@ function _makeExportEntryString(iconFilename: string) {
 // ----------------------------------------------------------------
 
 async function makeDir(pathToDir: string) {
-	fs.mkdir(pathToDir, { recursive: true });
+	fsp.mkdir(pathToDir, { recursive: true });
 }
 
 // ----------------------------------------------------------------
