@@ -4,7 +4,7 @@ export function capitalizeFirstLetter(string: string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export async function mkDir(pathToDir: string, recursive: boolean = true) {
+export async function mkDir(pathToDir: string, recursive = true) {
 	fsp.mkdir(pathToDir, { recursive: recursive });
 }
 

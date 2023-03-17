@@ -85,7 +85,7 @@ function makePkgExportsObj(
 	componentsFolder: string,
 	files: string[]
 ): PkgExports {
-	let pkgExportsObj: PkgExports = {
+	const pkgExportsObj: PkgExports = {
 		'./package.json': './package.json'
 	};
 
@@ -139,7 +139,7 @@ function makePkgTypesVersionsObj(
 	componentsFolder: string,
 	files: string[]
 ): PkgTypesVersions {
-	let dtsObj: PkgTypesVersions = {
+	const dtsObj: PkgTypesVersions = {
 		'>4.0': {}
 	};
 
