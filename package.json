@@ -62,6 +62,7 @@
 		"generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
+		"postinstall": "git config core.hooksPath .githooks",
 		"preview": "vite preview",
 		"sync": "svelte-kit sync"
 	},
