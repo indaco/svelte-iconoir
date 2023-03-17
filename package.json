@@ -4,14 +4,15 @@
 	"type": "module",
 	"packageManager": "pnpm@7.27.1",
 	"author": "indaco <github@mircoveltri.me>",
-	"description": "Iconoir SVG icons to Svelte and SvelteKit.",
+	"description": "Iconoir SVG icons as Svelte components.",
 	"license": "MIT",
 	"keywords": [
-		"svelte",
-		"sveltekit",
 		"iconoir",
 		"icons",
 		"icons-set",
+		"svelte",
+		"svelte components",
+		"sveltekit",
 		"svg-icons"
 	],
 	"repository": {
@@ -22,12 +23,12 @@
 		"url": "https://github.com/indaco/svelte-iconoir/issues"
 	},
 	"dependencies": {
-		"svelte": "^3.56.0"
+		"svelte": "^3.57.0"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "2.0.0",
-		"@sveltejs/kit": "1.8.3",
-		"@sveltejs/package": "1.0.2",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.12.0",
+		"@sveltejs/package": "^2.0.2",
 		"@types/cli-progress": "^3.11.0",
 		"@types/svg-parser": "^2.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.55.0",
@@ -45,21 +46,24 @@
 		"svg-parser": "^2.0.4",
 		"tslib": "^2.5.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.1.4"
+		"vite": "^4.2.0"
 	},
 	"scripts": {
-		"build": "rimraf dist && svelte-kit sync && svelte-package && pnpm postbuild",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"clean": "tsc --outDir build/scripts && node build/scripts/cleanAll.js",
-		"dev": "svelte-kit sync && vite dev",
+		"build": "rimraf dist && pnpm sync && svelte-package && pnpm postbuild",
+		"check": "pnpm sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "pnpm sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"clean": "rimraf dist && pnpm compile && node build/scripts/cleanAll.js",
+		"compile": "tsc --outDir build/scripts",
+		"cpfiles": "node build/scripts/cpFiles.js",
+		"dev": "pnpm sync && vite dev",
 		"format": "prettier --plugin-search-dir . --write .",
-		"generate:icons": "svelte-kit sync && tsc --outDir build/scripts && pnpm clean && node build/scripts/buildIconsDataset.js",
+		"generate:icons": "pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
+		"generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"postbuild": "pnpm exec publint ./dist",
-		"preview": "vite preview"
+		"postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
+		"preview": "vite preview",
+		"sync": "svelte-kit sync"
 	},
-	"types": "index.d.ts",
 	"sideEffects": false,
 	"svelte": "./index.js"
 }

@@ -5,67 +5,107 @@ import { join, dirname } from 'node:path';
 import { promises as fsp } from 'node:fs';
 import cliProgress from 'cli-progress';
 import pc from 'picocolors';
+import { mkDir, makeComponentFilename, makeComponentName, capitalizeFirstLetter } from './utils.js';
+
+type Icon = {
+	svgFile: string;
+	name: string;
+	component: string;
+	componentFile: string;
+	componentFolder: string;
+	data?: Record<string, string | number>[];
+};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// ----------------------------------------------------------------
-
-interface Icon {
-	name: string;
-	data?: Record<string, string | number>[];
-}
-
-// ----------------------------------------------------------------
-
 const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons');
-const LIB_FOLDER = join(__dirname, '..', '..', 'src', 'lib');
-const ICONS_OUTPUT_FOLDER = join(LIB_FOLDER, 'icons');
-const INDEX_FILE = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
+const ICONS_OUTPUT_FOLDER = join(__dirname, '..', '..', 'src', 'lib', 'icons');
 
 let counter = 0;
 
-// create a new progress bar instance and use shades_classic theme
+// create a new progress bar instance with the shades_classic theme.
 const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_grey);
 
 // ----------------------------------------------------------------
 
 async function main() {
-	await makeDir(LIB_FOLDER);
-	await makeDir(ICONS_OUTPUT_FOLDER);
+	await mkDir(ICONS_OUTPUT_FOLDER);
 
-	console.log(pc.magenta('\n* Getting list of all icons...\n'));
+	console.log(pc.blue('* Getting list of all icons...'));
 	const files = await fsp.readdir(INPUT_FOLDER);
+	const iconObjs = await makeIconObjsList(files);
 
-	console.log(pc.magenta('* Generating folders tree...\n'));
-	await generateFolderTree(files);
+	console.log(pc.blue('* Generating folders tree...'));
+	await generateFolderTree(ICONS_OUTPUT_FOLDER, iconObjs);
 
-	console.log(pc.magenta('* Generating icon components...\n'));
-	await generateIconsDataset(files);
+	console.log(pc.blue('* Generating icon components...\n'));
+	await generateIconsDataset(INPUT_FOLDER, ICONS_OUTPUT_FOLDER, iconObjs);
 }
 
-async function generateFolderTree(files: string[]) {
-	files.forEach(async (file) => {
-		const filename = file.split('.').slice(0, -1).join('.');
+// ----------------------------------------------------------------
 
-		await makeDir(join(ICONS_OUTPUT_FOLDER, _makeIconNameString(filename)));
+/**
+ * It takes a list of file names, and returns a list of objects that contain the file name, the
+ * name of the icon, the name of the component, the name of the component file, and the name of
+ * the component folder.
+ *
+ * @param {string[]} files - the list of files in the icons folder
+ *
+ * @returns An array of Icon objects.
+ */
+async function makeIconObjsList(files: string[]): Promise<Icon[]> {
+	return files.reduce((acc: Icon[], curr: string) => {
+		const svgFile = curr;
+		const name = curr.split('.').slice(0, -1).join('.');
+		const componentFolder = name;
+		const component = makeComponentName(name);
+		const componentFile = makeComponentFilename(component);
+
+		acc.push({
+			svgFile,
+			name,
+			component,
+			componentFile,
+			componentFolder
+		} satisfies Icon);
+		return acc;
+	}, [] as Icon[]);
+}
+
+/**
+ * It takes an array of icon objects and creates a folder for each icon in the iconsOutputFolder.
+ *
+ * @param {string} iconsOutputFolder - The folder where a folder for each icon will be generated.
+ * @param {Icon[]} icons  - this is the array of icon objects.
+ */
+async function generateFolderTree(iconsOutputFolder: string, icons: Icon[]): Promise<void> {
+	icons.map(async (icon) => {
+		await mkDir(join(iconsOutputFolder, icon.componentFolder));
 	});
 }
 
-async function generateIconsDataset(files: string[]) {
-	progressBar.start(files.length, 0, {
+/**
+ * It reads the SVG file, parses it, extracts the data, generates the Svelte component, generates
+ * the index.ts and index.d.ts files, and appends an entry to the index.ts file.
+ *
+ * @param {string} inputFolder - the folder where the original SVG files are located
+ * @param {string} iconsOutputFolder - the folder where the generated icon components will be stored
+ * @param {string} indexFile - the path to the index.ts file
+ * @param {Icon[]} icons - an array of icons that we'll be generating
+ */
+async function generateIconsDataset(
+	inputFolder: string,
+	iconsOutputFolder: string,
+	icons: Icon[]
+): Promise<void> {
+	progressBar.start(icons.length, 0, {
 		filename: 'N/A'
 	});
 
-	files.forEach(async (file) => {
-		const iconData = await fsp.readFile(join(INPUT_FOLDER, file), 'utf8');
+	icons.map(async (icon) => {
+		const iconData = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
 		const parsed = parse(iconData.toString());
-
-		const filename = file.split('.').slice(0, -1).join('.');
-		const icon: Icon = {
-			name: filename
-		};
-
 		parsed.children.forEach((item) => {
 			if ((item as ElementNode).children === undefined) return;
 
@@ -79,28 +119,33 @@ async function generateIconsDataset(files: string[]) {
 				}
 			});
 		});
+
 		counter++;
 
 		// generate svelte component for each icon
-		await makeIconComponent(ICONS_OUTPUT_FOLDER, icon);
+		await makeIconComponent(iconsOutputFolder, icon);
 		// generate index.ts and index.d.ts files for each icon
-		await makeIconComponentIndex(ICONS_OUTPUT_FOLDER, icon);
+		await makeIconComponentIndex(iconsOutputFolder, icon);
 		// append an entry to index.ts file
-		await appendToExports(INDEX_FILE, icon);
+		await appendToIndexTs(icon);
 
 		progressBar.stop();
 	});
 }
 
-async function makeIconComponent(outputFolder: string, iconObj: Icon) {
-	const iconFilename = _makeIconNameString(iconObj.name);
-
+/**
+ * It takes an icon object and writes a Svelte component file to the output folder.
+ *
+ * @param {string} outputFolder - The folder to output the icon components to.
+ * @param {Icon} iconObj - The icon object from the icons.json file
+ */
+async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<void> {
 	progressBar.update(counter, {
-		filename: `${iconFilename}.svelte`
+		filename: `${iconObj.componentFile}`
 	});
 
 	const txt = `<script>
-	export let altText = '${iconObj.name} icon';
+	export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
 	export let size = '1.5em';
 	export let color = '';
 	$: fillColor = color != '' ? color : 'none'
@@ -121,18 +166,28 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon) {
 	on:dblclick
 >${buildIconDataString(iconObj).join(' ')}</svg>`;
 
-	await fsp.writeFile(join(outputFolder, iconFilename, iconFilename + '.svelte'), txt);
+	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
 }
 
-async function makeIconComponentIndex(outputFolder: string, iconObj: Icon) {
-	const iconFilename = _makeIconNameString(iconObj.name);
-	const txt = `import ${iconFilename} from './${iconFilename}.svelte';
-	export { ${iconFilename} };
-	`;
+/**
+ * It writes a file called `index.ts` in the folder for each icon, which exports the icon component.
+ *
+ * @param {string} outputFolder - The folder where the icon component will be created.
+ * @param {Icon} iconObj - The icon object from the icons.json file.
+ */
+async function makeIconComponentIndex(outputFolder: string, iconObj: Icon): Promise<void> {
+	const txt = `export { default as ${iconObj.component} } from './${iconObj.componentFile}';`;
 
-	await fsp.writeFile(join(outputFolder, iconFilename, 'index.ts'), txt);
+	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, 'index.ts'), txt);
 }
 
+/**
+ * It takes an Icon object and returns an array of strings.
+ *
+ * @param {Icon} icon - Icon - The icon object that we're building the SVG string for.
+ *
+ * @returns An array of strings.
+ */
 function buildIconDataString(icon: Icon): string[] {
 	// <path (key="value"...)/>
 	if (icon.data != undefined) {
@@ -146,99 +201,25 @@ function buildIconDataString(icon: Icon): string[] {
 	return [];
 }
 
-async function appendToExports(filename: string, iconObj: Icon) {
-	const iconFilename = _makeIconNameString(iconObj.name);
-	const exportString = _makeExportEntryString(iconFilename);
+/**
+ * It takes a filename and an icon object, and appends an export entry to the file.
+ *
+ * @param {string} filename - The name of the file to append to.
+ * @param {Icon} iconObj - The icon object from the JSON file.
+ */
+async function appendToIndexTs(iconObj: Icon): Promise<void> {
+	const indexFile = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
+	const exportString = makeExportEntryString(iconObj);
 
 	progressBar.update(counter, {
-		filename: `${iconFilename}.svelte`
+		filename: `${iconObj.componentFile}`
 	});
 
-	await fsp.appendFile(filename, exportString);
+	await fsp.appendFile(indexFile, exportString);
 }
 
-// ----------------------------------------------------------------
-
-function _toCamelCase(str: string) {
-	const text = str.replace(/-([a-z0-9])/g, (g) => g[1].toUpperCase());
-	return text.replaceAll(/ /g, '');
-}
-
-function _capitalizeFirstLetter(string: string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function _makeIconNameString(filename: string) {
-	const camelCase = _toCamelCase(filename);
-
-	switch (camelCase) {
-		case '1stMedal':
-			return 'Medal1stIcon';
-		case '360View':
-			return 'View360Icon';
-		case '3dSelectEdge':
-			return 'SelectEdge3DIcon';
-		case '3dSelectFace':
-			return 'SelectFace3DIcon';
-		case '3dSelectPoint':
-			return 'SelectPoint3DIcon';
-		case '3dSelectSolid':
-			return 'SelectSolid3DIcon';
-		case '3dAddHole':
-			return 'AddHole3DIcon';
-		case '3dArcCenterPt':
-			return 'ArcCenterPt3DIcon';
-		case '3dArc':
-			return 'Arc3DIcon';
-		case '3dCenterBox':
-			return 'CenterBox3DIcon';
-		case '3dBridge':
-			return 'Bridge3DIcon';
-		case '3dEllipse':
-			return 'Ellipse3DIcon';
-		case '3dPtBox':
-			return 'PtBox3DIcon';
-		case '3dRectCornerToCorner':
-			return 'RectCornerToCorner3DIcon';
-		case '3dEllipseThreePts':
-			return 'EllipseThreePts3DIcon';
-		case '3dRectFromCenter':
-			return 'RectFromCenter3DIcon';
-		case '3dThreePtsBox':
-			return 'ThreePtsBoxeDIcon';
-		case '3dRectThreePts':
-			return 'RectThreePts3DIcon';
-		case '2x2Cell':
-			return 'Cell2x2Icon';
-		case '4kDisplay':
-			return 'Display4kIcon';
-		case '4x4Cell':
-			return 'Cell4x4Icon';
-		case 'github':
-			return 'GitHubIcon';
-		case 'githubOutline':
-			return 'GitHubOutlineIcon';
-		case 'gitlabFull':
-			return 'GitLabFullIcon';
-		case 'linkedin':
-			return 'LinkedInIcon';
-		case 'tiktok':
-			return 'TikTokIcon';
-		case 'youtube':
-			return 'YouTubeIcon';
-		default:
-			return _capitalizeFirstLetter(camelCase) + 'Icon';
-	}
-}
-
-function _makeExportEntryString(iconFilename: string) {
-	return `export { ${iconFilename} } from './icons/${iconFilename}/index.js';\n`;
-}
-
-// ----------------------------------------------------------------
-
-async function makeDir(pathToDir: string) {
-	fsp.mkdir(pathToDir, { recursive: true });
+function makeExportEntryString(iconObj: Icon): string {
+	return `export { ${iconObj.component} } from './icons/${iconObj.componentFolder}/index.js';\n`;
 }
 
 // ----------------------------------------------------------------
