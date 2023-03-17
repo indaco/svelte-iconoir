@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1200+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoi@4.0.0` matches `iconoir@6.4.1`
+> `svelte-iconoi@4.0.0` matches `iconoir@6.4.0`
 
 ## Install
 
@@ -54,6 +54,8 @@ where:
   import SunLightIcon from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
 </script>
 ```
+
+> **Note:** you can still import and use the icon as `import { <component_name>Icon } from '@indaco/svelte-iconoir';` but this will have performace issue when the server run due to the import of the entire icons set.
 
 ### Exceptions
 
