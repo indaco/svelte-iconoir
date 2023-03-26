@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1200+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoi@4.0.0` matches `iconoir@6.4.0`
+> `svelte-iconoi@4.1.0` matches `iconoir@6.5.0`
 
 ## Install
 

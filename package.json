@@ -1,6 +1,6 @@
 {
 	"name": "@indaco/svelte-iconoir",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"type": "module",
 	"packageManager": "pnpm@7.30.3",
 	"author": "indaco <github@mircoveltri.me>",
