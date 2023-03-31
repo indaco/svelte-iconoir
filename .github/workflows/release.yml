@@ -19,12 +19,6 @@ jobs:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
 
-      # should fix JavaScript heap out of memory
-      # https://github.com/actions/runner-images/issues/70#issuecomment-1191708172
-      - name: Increase Node max memory usage
-        env:
-          NODE_OPTIONS: '--max_old_space_size=4096'
-
       - name: Install PNPM
         run: npm install --location=global pnpm
 
@@ -41,6 +35,8 @@ jobs:
         run: pnpm lint
 
       - name: Build the package
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
         run: pnpm build
 
       - name: Publish to NPM Packages
