@@ -9,13 +9,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      # should fix JavaScript heap out of memory
-      # https://github.com/actions/runner-images/issues/70#issuecomment-1191708172
-      - name: 'Just do it'
-        env:
-          NODE_OPTIONS: '--max_old_space_size=4096'
-        run: npm start
-
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -25,6 +18,12 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
+
+      # should fix JavaScript heap out of memory
+      # https://github.com/actions/runner-images/issues/70#issuecomment-1191708172
+      - name: Increase Node max memory usage
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
 
       - name: Install PNPM
         run: npm install --location=global pnpm
