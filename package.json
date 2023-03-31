@@ -23,19 +23,19 @@
 		"url": "https://github.com/indaco/svelte-iconoir/issues"
 	},
 	"dependencies": {
-		"svelte": "^3.57.0"
+		"svelte": "^3.58.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/kit": "^1.14.0",
+		"@sveltejs/kit": "^1.15.0",
 		"@sveltejs/package": "^2.0.2",
 		"@types/cli-progress": "^3.11.0",
 		"@types/svg-parser": "^2.0.3",
-		"@typescript-eslint/eslint-plugin": "^5.56.0",
-		"@typescript-eslint/parser": "^5.56.0",
+		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.0",
 		"bumpp": "9.0.0",
 		"cli-progress": "^3.12.0",
-		"eslint": "^8.36.0",
+		"eslint": "^8.37.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"picocolors": "1.0.0",
@@ -46,7 +46,7 @@
 		"svelte-check": "^3.1.4",
 		"svg-parser": "^2.0.4",
 		"tslib": "^2.5.0",
-		"typescript": "^5.0.2",
+		"typescript": "^5.0.3",
 		"vite": "^4.2.1"
 	},
 	"scripts": {
