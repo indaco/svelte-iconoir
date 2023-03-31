@@ -11,9 +11,10 @@ jobs:
     steps:
       # should fix JavaScript heap out of memory
       # https://github.com/actions/runner-images/issues/70#issuecomment-1191708172
-      - run: |
-        export NODE_OPTIONS="--max_old_space_size=4096"
-        npm start
+      - name: 'Just do it'
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+        run: npm start
 
       - uses: actions/checkout@v3
         with:
