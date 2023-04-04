@@ -145,19 +145,43 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	});
 
 	const txt = `<script>
-	export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
-	export let size = '1.5em';
-	export let color = '';
-	$: fillColor = color != '' ? color : 'none'
+  /**
+   * The size of the icon.
+   * @typedef {('sm'|'base'|'lg'|'xl'|'2xl'|number)} IconSize
+   */
+
+  /** @type {IconSize} */
+  export let size = 'base';
+  /** @type {string} */
+  export let stroke = 'currentColor';
+  /** @type {number} */
+  export let strokeWidth = 1.5;
+  /** @type {string} */
+  export let color = '';
+  /** @type {string} */
+  export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
+
+  const defaultSize = '1rem';
+  const sizeMap = {
+    sm: '0.875rem',
+    base: '1rem',
+    lg: '1.125rem',
+    xl: '1.25rem',
+    '2xl': '1.5rem',
+  };
+
+  $: _size = typeof size === 'number' ? size : sizeMap[size] || defaultSize;
+  $: _fillColor = color != '' ? color : 'none';
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	width={size}
-	height={size}
-	stroke-width={1.5}
+	width={_size}
+	height={_size}
+	{stroke}
+	stroke-width={strokeWidth}
 	viewBox="0 0 24 24"
-	fill={fillColor}
+	fill={_fillColor}
 	aria-hidden="true"
 	aria-labelledby={altText}
 	class={$$props.class}

@@ -137,20 +137,36 @@ You can apply your own styles to the icon components in different ways:
  import { ActivityIcon } from '@indaco/svelte-iconoir/activity';
 </script>
 
-<ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2.5em" />
+<ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2xl" />
 ```
 
 ## Properties
 
 Each icon component has the following properties to allow you customing the rendered svg:
 
-| Property | Type   | Required | Default           | Description                                 |
-| :------- | :----- | :------: | :---------------- | :------------------------------------------ |
-| alt      | String |    No    | same as icon name | Set the alt attribute on the rendered svg   |
-| size     | String |    No    | `1.5em`           | Set the icon's size                         |
-| color    | String |    No    | `currentColor`    | Set the icon's colour                       |
-| style    | String |    No    |                   | Set the style attribute on the rendered svg |
-| class    | String |    No    |                   | Set the class attribute on the rendered svg |
+| Property    | Type       | Default   | Description                                           |
+| :---------- | :--------- | :-------- | :---------------------------------------------------- |
+| size        | `IconSize` | `base`    | Set the size of the icon                              |
+| color       | `string`   | `none`    | Set the fill colour to be applied to the icon         |
+| strokeWidth | `number`   | `1.5`     | Set the width of the stroke to be applied to the icon |
+| alt         | `string`   | icon name | Set the `aria-label` attribute on the rendered svg    |
+| style       | `string`   |           | Set the `style` attribute on the rendered svg         |
+| class       | `string`   |           | Set the `class` attribute on the rendered svg         |
+
+```javascript
+/**
+ * The size of the icon.
+ * @typedef {('sm'|'base'|'lg'|'xl'|'2xl'|number)} IconSize
+ */
+```
+
+| Size | Value      |
+| :--- | ---------: |
+| sm   | `0.875rem` |
+| base | `1rem`     |
+| lg   | `1.125rem` |
+| xl   | `1.25rem`  |
+| 2xl  | `1.5rem`   |
 
 ## Event Forwarding
 
