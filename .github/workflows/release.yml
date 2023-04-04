@@ -19,8 +19,10 @@ jobs:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install PNPM
-        run: npm install --location=global pnpm
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install all dependencies
         run: pnpm install --no-frozen-lockfile
@@ -47,7 +49,7 @@ jobs:
       - name: Setup .npmrc file to publish to GitHub Packages
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: 16
           registry-url: 'https://npm.pkg.github.com'
           scope: '@indaco'
 
