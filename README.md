@@ -195,6 +195,9 @@ pnpm generate:icons
 
 # Package
 pnpm build
+
+## Run postbuild script
+pnpm postbuild
 ```
 
 ## License
