@@ -49,7 +49,7 @@
 		"vite": "^4.2.1"
 	},
 	"scripts": {
-		"build": "rimraf dist && pnpm sync && svelte-package && pnpm postbuild",
+		"build": "rimraf dist && pnpm sync && svelte-package",
 		"check": "pnpm sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "pnpm sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"clean": "rimraf dist && pnpm compile && node build/scripts/cleanAll.js",
