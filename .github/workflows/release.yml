@@ -33,13 +33,20 @@ jobs:
       - name: Run Prettier format
         run: pnpm format
 
-      - name: Run Prettier lint
+      - name: Run Lint
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
         run: pnpm lint
 
       - name: Build the package
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
         run: pnpm build
+
+      - name: Run postbuild scripts
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+        run: pnpm postbuild
 
       - name: Publish to NPM Packages
         run: npm publish --access public ./dist
