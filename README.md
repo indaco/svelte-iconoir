@@ -13,11 +13,11 @@
 
 # Svelte Iconoir
 
-The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1200+ SVG icons) as Svelte components.
+The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons) as Svelte components.
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoi@4.2.0` matches `iconoir@6.5.0`
+> `svelte-iconoi@4.3.0` matches `iconoir@6.8.0`
 
 ## Install
 
@@ -74,7 +74,8 @@ The naming convention above has few exceptions breaking it:
 | 3d-arc-center-pt         | ArcCenterPt3dIcon        |
 | 3d-arc                   | Arc3dIcon                |
 | 3d-bridge                | Bridge3dIcon             |
-| 3d-center-box            | 3dCenterBox              |
+| 3d-center-box            | CenterBox3dIcon          |
+| 3d-draft-face            | DraftFace3dIcon          |
 | 3d-ellipse-three-pts     | EllipseThreePts3dIcon    |
 | 3d-ellipse               | Ellipse3dIcon            |
 | 3d-pt-box                | PtBox3dIcon              |
