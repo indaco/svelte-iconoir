@@ -30,6 +30,8 @@ export function makeComponentName(filename: string) {
 			return 'Bridge3dIcon';
 		case '3dCenterBox':
 			return 'CenterBox3dIcon';
+		case '3dDraftFace':
+			return 'DraftFace3dIcon';
 		case '3dEllipseThreePts':
 			return 'EllipseThreePts3dIcon';
 		case '3dEllipse':
