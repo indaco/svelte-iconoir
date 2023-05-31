@@ -22,8 +22,8 @@
 	"bugs": {
 		"url": "https://github.com/indaco/svelte-iconoir/issues"
 	},
-	"dependencies": {
-		"svelte": "^3.59.1"
+	"peerDependencies": {
+		"svelte": "^3.59.1 || ^4.0.0 "
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.1.0",
