@@ -36,13 +36,13 @@ yarn add @indaco/svelte-iconoir
 
 ```html
 <script>
-  import { <component_name>Icon } from '@indaco/svelte-iconoir/<icon_name>';
+  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_name>';
 </script>
 ```
 
 where:
 
-- **<component_name>**: icon name as _CamelCase_ notation
+- **<ComponentName>**: icon name as _CamelCase_ notation
 - **<icon_name>**: the original icon name as per iconoir.com
 
 ### Example
