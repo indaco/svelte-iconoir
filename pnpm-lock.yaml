@@ -54,7 +54,7 @@ devDependencies:
     version: 2.10.1(prettier@2.8.8)(svelte@3.59.1)
   publint:
     specifier: ^0.1.12
-    version: 0.1.12
+    version: 0.1.15
   rimraf:
     specifier: ^5.0.1
     version: 5.0.1
@@ -1599,8 +1599,8 @@ packages:
     hasBin: true
     dev: true
 
-  /publint@0.1.12:
-    resolution: {integrity: sha512-8LxkO430t/SOhUl0qXQWdXq34m6oyLcPhE4Kc8eXhOEnB82vCHcShPQ2kH53n/ksC7jWdRWDP7MPGxKJbntQfg==}
+  /publint@0.1.15:
+    resolution: {integrity: sha512-LyoUm/J1oSOik9EYftHSyUEwJATToqFyO1wad8i2m2KvaNcBmV5rbD3ZvPqQAHzVs47MLa2Rsd8nw9NmV/Ep0w==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
