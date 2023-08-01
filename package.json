@@ -40,7 +40,7 @@
 		"picocolors": "1.0.0",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
-		"publint": "^0.1.16",
+		"publint": "^0.2.0",
 		"rimraf": "^5.0.1",
 		"svelte-check": "^3.4.6",
 		"svg-parser": "^2.0.4",
