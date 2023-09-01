@@ -60,7 +60,7 @@ devDependencies:
     version: 5.0.1
   svelte-check:
     specifier: ^3.4.6
-    version: 3.4.6(svelte@3.59.1)
+    version: 3.5.1(svelte@3.59.1)
   svg-parser:
     specifier: ^2.0.4
     version: 2.0.4
@@ -1800,8 +1800,8 @@ packages:
       has-flag: 4.0.0
     dev: true
 
-  /svelte-check@3.4.6(svelte@3.59.1):
-    resolution: {integrity: sha512-OBlY8866Zh1zHQTkBMPS6psPi7o2umTUyj6JWm4SacnIHXpWFm658pG32m3dKvKFL49V4ntAkfFHKo4ztH07og==}
+  /svelte-check@3.5.1(svelte@3.59.1):
+    resolution: {integrity: sha512-+Zb4iHxAhdUtcUg/WJPRjlS1RJalIsWAe9Mz6G1zyznSs7dDkT7VUBdXc3q7Iwg49O/VrZgyJRvOJkjuBfKjFA==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0 || ^4.0.0-next.0 || ^4.0.0
