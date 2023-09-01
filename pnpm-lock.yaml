@@ -18,7 +18,7 @@ devDependencies:
     version: 1.22.4(svelte@3.59.1)(vite@4.4.9)
   '@sveltejs/package':
     specifier: ^2.2.0
-    version: 2.2.0(svelte@3.59.1)(typescript@5.1.6)
+    version: 2.2.2(svelte@3.59.1)(typescript@5.1.6)
   '@types/cli-progress':
     specifier: ^3.11.0
     version: 3.11.0
@@ -441,8 +441,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/package@2.2.0(svelte@3.59.1)(typescript@5.1.6):
-    resolution: {integrity: sha512-TXbrzsk+T5WNcSzrU41D8P32vU5guo96lVS11/R+rpLhZBH5sORh0Qp6r68Jg4O5vcdS3JLwpwcpe8VFbT/QeA==}
+  /@sveltejs/package@2.2.2(svelte@3.59.1)(typescript@5.1.6):
+    resolution: {integrity: sha512-rP3sVv6cAntcdcG4r4KspLU6nZYYUrHJBAX3Arrw0KJFdgxtlsi2iDwN0Jwr/vIkgjcU0ZPWM8kkT5kpZDlWAw==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     peerDependencies:
