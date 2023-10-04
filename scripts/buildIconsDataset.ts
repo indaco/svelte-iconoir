@@ -144,51 +144,49 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 		filename: `${iconObj.componentFile}`
 	});
 
-	const txt = `<script>
-  /**
-   * The size of the icon.
-   * @typedef {('sm'|'base'|'lg'|'xl'|'2xl'|number)} IconSize
-   */
+	const txt = `<script lang="ts">
+	import type { SVGAttributes } from 'svelte/elements';
 
-  /** @type {IconSize} */
-  export let size = 'base';
-  /** @type {string} */
-  export let stroke = 'currentColor';
-  /** @type {number} */
-  export let strokeWidth = 1.5;
-  /** @type {string} */
-  export let color = '';
-  /** @type {string} */
-  export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
+	const sizeMap = {
+		'sm': '0.875rem',
+		'base': '1rem',
+		'lg': '1.125rem',
+		'xl': '1.25rem',
+		'2xl': '1.5rem'
+	} as const;
 
-  const defaultSize = '1rem';
-  const sizeMap = {
-    sm: '0.875rem',
-    base: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-  };
+	type IconSize = keyof typeof sizeMap;
 
-  $: _size = typeof size === 'number' ? size : sizeMap[size] || defaultSize;
-  $: _fillColor = color != '' ? color : 'none';
+	type $$Props = SVGAttributes<SVGElement> & {
+		size?: IconSize | number;
+		altText?: string;
+	};
+
+	let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
+
+	const defaultSize = '1rem';
+
+	$: _size =
+		typeof $$props.size === 'number'
+			? $$props.size
+			: sizeMap[$$props.size as unknown as IconSize] || defaultSize;
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	width={_size}
 	height={_size}
-	{stroke}
-	stroke-width={strokeWidth}
+	stroke="currentColor"
+	stroke-width="1.5"
 	viewBox="0 0 24 24"
-	fill={_fillColor}
 	aria-hidden="true"
 	aria-labelledby={altText}
 	class={$$props.class}
 	style={$$props.style}
-	on:click
-	on:dblclick
->${buildIconDataString(iconObj).join(' ')}</svg>`;
+	{...$$restProps}
+>
+    ${buildIconDataString(iconObj).join(' ')}
+</svg>`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
 }
