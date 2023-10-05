@@ -180,8 +180,6 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	viewBox="0 0 24 24"
 	aria-hidden="true"
 	aria-labelledby={altText}
-	class={$$props.class}
-	style={$$props.style}
 	{...$$restProps}
 >
     ${buildIconDataString(iconObj).join(' ')}
