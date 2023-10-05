@@ -176,7 +176,6 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	xmlns="http://www.w3.org/2000/svg"
 	width={_size}
 	height={_size}
-	stroke="currentColor"
 	stroke-width="1.5"
 	viewBox="0 0 24 24"
 	aria-hidden="true"
