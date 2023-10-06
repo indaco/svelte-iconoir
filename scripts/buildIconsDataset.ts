@@ -145,7 +145,9 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	});
 
 	const txt = `<script lang="ts">
-	import type { SVGAttributes } from 'svelte/elements';
+
+	export let size: IconSize | string | number = 'base'
+	export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
 
 	const sizeMap = {
 		'sm': '0.875rem',
@@ -153,23 +155,18 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 		'lg': '1.125rem',
 		'xl': '1.25rem',
 		'2xl': '1.5rem'
-	} as const;
-
-	type IconSize = keyof typeof sizeMap;
-
-	type $$Props = SVGAttributes<SVGElement> & {
-		size?: IconSize | number;
-		altText?: string;
 	};
 
-	let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
+	type IconSize = keyof typeof sizeMap;
 
 	const defaultSize = '1rem';
 
 	$: _size =
-		typeof $$props.size === 'number'
-			? $$props.size
-			: sizeMap[$$props.size as unknown as IconSize] || defaultSize;
+		size in sizeMap
+			? sizeMap[size as unknown as IconSize]
+			: typeof size === 'number' || typeof size === 'string'
+			? size
+			: defaultSize;
 </script>
 
 <svg
@@ -181,6 +178,12 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	viewBox="0 0 24 24"
 	aria-hidden="true"
 	aria-labelledby={altText}
+	on:click
+	on:dblclick
+	on:keydown
+	on:keyup
+	on:mouseenter
+	on:mouseleave
 	{...$$restProps}
 >
     ${buildIconDataString(iconObj).join(' ')}

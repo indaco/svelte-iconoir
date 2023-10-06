@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoir@4.7.0` matches `iconoir@6.11.0`
+> `svelte-iconoir@4.7.1` matches `iconoir@6.11.0`
 
 ## Install
 
@@ -165,7 +165,7 @@ The underlying properties can also be set and overriden manually, e.g. setting `
 ```javascript
 /**
  * The size of the icon.
- * @typedef {('sm'|'base'|'lg'|'xl'|'2xl'|number)} IconSize
+ * @typedef {('sm'|'base'|'lg'|'xl'|'2xl'|number|string)} IconSize
  */
 ```
 
@@ -179,7 +179,17 @@ The underlying properties can also be set and overriden manually, e.g. setting `
 
 ## Event Forwarding
 
-All SVG Element events are forwarded.
+The following events are _forwarded_.
+
+| Name            |
+| :-------------- |
+| `on:click`      |
+| `on:dblclick`   |
+| `on:keyup`      |
+| `on:keydown`    |
+| `on:mouseenter` |
+| `on:mouseleave` |
+
 For example, you can set the `on:click` event on all icons.
 
 ```html
@@ -187,7 +197,7 @@ For example, you can set the `on:click` event on all icons.
  import { ActivityIcon } from '@indaco/svelte-iconoir/activity';
 </script>
 
-<ActivityIcon class="p-1 rounded-full border-6 bg-blue-300" on:click={() => alert("hi!")} size="2.5em" />
+<ActivityIcon on:click={() => alert("hi!")} />
 ```
 
 ## Dev Flow
