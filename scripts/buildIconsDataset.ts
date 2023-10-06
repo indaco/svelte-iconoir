@@ -145,27 +145,32 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	});
 
 	const txt = `<script lang="ts">
-
-	export let size: IconSize | string | number = 'base'
-	export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
+	import type { SVGAttributes } from 'svelte/elements';
 
 	const sizeMap = {
-		'sm': '0.875rem',
-		'base': '1rem',
-		'lg': '1.125rem',
-		'xl': '1.25rem',
+		sm: '0.875rem',
+		base: '1rem',
+		lg: '1.125rem',
+		xl: '1.25rem',
 		'2xl': '1.5rem'
 	};
 
 	type IconSize = keyof typeof sizeMap;
 
-	const defaultSize = '1rem';
+	interface $$Props extends SVGAttributes<SVGElement> {
+		size?: IconSize | string | number;
+		altText?: string;
+	}
+
+	export let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
+
+	const defaultSize = sizeMap['base'];
 
 	$: _size =
-		size in sizeMap
-			? sizeMap[size as unknown as IconSize]
-			: typeof size === 'number' || typeof size === 'string'
-			? size
+		$$props.size in sizeMap
+			? sizeMap[$$props.size as unknown as IconSize]
+			: typeof $$props.size === 'number' || typeof $$props.size === 'string'
+			? $$props.size
 			: defaultSize;
 </script>
 
