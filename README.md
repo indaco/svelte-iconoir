@@ -143,16 +143,24 @@ You can apply your own styles to the icon components in different ways:
 
 ## Properties
 
-Each icon component has the following properties to allow you customing the rendered svg:
+Each icon component can take any property of a normal SVG Element, for example:
 
 | Property    | Type       | Default   | Description                                           |
 | :---------- | :--------- | :-------- | :---------------------------------------------------- |
-| size        | `IconSize` | `base`    | Set the size of the icon                              |
 | color       | `string`   | `none`    | Set the fill colour to be applied to the icon         |
 | strokeWidth | `number`   | `1.5`     | Set the width of the stroke to be applied to the icon |
-| alt         | `string`   | icon name | Set the `aria-label` attribute on the rendered svg    |
 | style       | `string`   |           | Set the `style` attribute on the rendered svg         |
 | class       | `string`   |           | Set the `class` attribute on the rendered svg         |
+| ... |
+
+In addition to these, each component can take the following properties:
+
+| Property    | Type       | Default   | Description                                           |
+| :---------- | :--------- | :-------- | :---------------------------------------------------- |
+| size        | `IconSize` | `base`    | Set the attributes `width` and `height`                              |
+| altText     | `string`   | icon name | Set the `aria-labelledby` attribute on the svg        |
+
+The underlying properties can also be set and overriden manually, e.g. setting `width` explicitly takes precedence over `size`.
 
 ```javascript
 /**
@@ -171,7 +179,8 @@ Each icon component has the following properties to allow you customing the rend
 
 ## Event Forwarding
 
-You can also override the `click, dblclick` events on an element.
+All SVG Element events are forwarded. 
+For example, you can set the `on:click` event on all icons.
 
 ```html
 <script>
