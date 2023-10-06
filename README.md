@@ -42,8 +42,8 @@ yarn add @indaco/svelte-iconoir
 
 where:
 
-- **<ComponentName>**: icon name as _CamelCase_ notation
-- **<icon_name>**: the original icon name as per iconoir.com
+- `<ComponentName>`: icon name as _CamelCase_ notation
+- `<icon_name>`: the original icon name as per iconoir.com
 
 ### Example
 
@@ -179,7 +179,7 @@ The underlying properties can also be set and overriden manually, e.g. setting `
 
 ## Event Forwarding
 
-All SVG Element events are forwarded. 
+All SVG Element events are forwarded.
 For example, you can set the `on:click` event on all icons.
 
 ```html
