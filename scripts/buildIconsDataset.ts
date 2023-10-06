@@ -1,4 +1,5 @@
-import type { ElementNode } from 'svg-parser';
+import type { Nodes } from 'hast-util-to-html/lib/index.js';
+import { toHtml } from 'hast-util-to-html';
 import { parse } from 'svg-parser';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
@@ -13,7 +14,7 @@ type Icon = {
 	component: string;
 	componentFile: string;
 	componentFolder: string;
-	data?: Record<string, string | number>[];
+	data?: string;
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,7 +34,7 @@ async function main() {
 	await mkDir(ICONS_OUTPUT_FOLDER);
 
 	console.log(pc.blue('* Getting list of all icons...'));
-	const files = await fsp.readdir(INPUT_FOLDER);
+	const files = await fsp.readdir(INPUT_FOLDER, 'utf-8');
 	const iconObjs = await makeIconObjsList(files);
 
 	console.log(pc.blue('* Generating folders tree...'));
@@ -104,21 +105,13 @@ async function generateIconsDataset(
 	});
 
 	icons.map(async (icon) => {
-		const iconData = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
-		const parsed = parse(iconData.toString());
-		parsed.children.forEach((item) => {
-			if ((item as ElementNode).children === undefined) return;
+		const svgRaw = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
+		const svgAst = parse(svgRaw);
 
-			icon.data = [];
-			(item as ElementNode).children.forEach(function (child) {
-				if ((child as ElementNode).properties === undefined) return;
-
-				const c = child as ElementNode;
-				if (icon.data != undefined && child != undefined && c.properties != undefined) {
-					icon.data.push(c.properties);
-				}
-			});
-		});
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		const elem: svgParser.RootNode = svgAst.children[0];
+		icon.data = toHtml(elem.children as unknown as Nodes);
 
 		counter++;
 
@@ -191,7 +184,7 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	on:mouseleave
 	{...$$restProps}
 >
-    ${buildIconDataString(iconObj).join(' ')}
+	${iconObj.data}
 </svg>`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
@@ -207,26 +200,6 @@ async function makeIconComponentIndex(outputFolder: string, iconObj: Icon): Prom
 	const txt = `export { default as ${iconObj.component} } from './${iconObj.componentFile}';`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, 'index.ts'), txt);
-}
-
-/**
- * It takes an Icon object and returns an array of strings.
- *
- * @param {Icon} icon - Icon - The icon object that we're building the SVG string for.
- *
- * @returns An array of strings.
- */
-function buildIconDataString(icon: Icon): string[] {
-	// <path (key="value"...)/>
-	if (icon.data != undefined) {
-		return icon.data.map(
-			(item) =>
-				`<path ${Object.entries(item)
-					.map(([key, value]) => `${key}="${value}" `)
-					.join('')}/>`
-		);
-	}
-	return [];
 }
 
 /**

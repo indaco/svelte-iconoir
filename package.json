@@ -37,6 +37,7 @@
 		"eslint": "^8.50.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.34.0",
+		"hast-util-to-html": "^9.0.0",
 		"picocolors": "1.0.0",
 		"prettier": "^3.0.3",
 		"prettier-plugin-svelte": "^3.0.3",
