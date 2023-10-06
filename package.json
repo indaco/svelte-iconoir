@@ -2,7 +2,7 @@
 	"name": "@indaco/svelte-iconoir",
 	"version": "4.6.0",
 	"type": "module",
-	"packageManager": "pnpm@8.7.1",
+	"packageManager": "pnpm@8.8.0",
 	"author": "indaco <github@mircoveltri.me>",
 	"description": "Iconoir SVG icons as Svelte components.",
 	"license": "MIT",
