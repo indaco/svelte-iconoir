@@ -57,7 +57,7 @@
 		"compile": "tsc --outDir build/scripts",
 		"cpfiles": "node build/scripts/cpFiles.js",
 		"dev": "pnpm sync && vite dev",
-		"format": "prettier --write  .",
+		"format": "prettier --write --plugin prettier-plugin-svelte --ignore-path ./.prettierignore .",
 		"generate:icons": "pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
 		"generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
 		"lint": "prettier --check . && eslint .",
