@@ -161,19 +161,18 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 
 	const defaultSize = '1rem';
 
-	$: _size = () => {
-		if (typeof size === 'string' && size in sizeMap) return sizeMap[size as unknown as IconSize];
-
-		if (typeof size === 'number' || typeof size === 'string') return size;
-
-		return defaultSize;
-	};
+	$: _size =
+		size in sizeMap
+			? sizeMap[size as unknown as IconSize]
+			: typeof size === 'number' || typeof size === 'string'
+			? size
+			: defaultSize;
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	width={_size()}
-	height={_size()}
+	width={_size}
+	height={_size}
 	fill="none"
 	stroke-width="1.5"
 	viewBox="0 0 24 24"
@@ -181,7 +180,6 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	aria-labelledby={altText}
 	on:click
 	on:dblclick
-	on:change
 	on:keydown
 	on:keyup
 	on:mouseenter
