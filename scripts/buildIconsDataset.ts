@@ -145,7 +145,9 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	});
 
 	const txt = `<script lang="ts">
-	import type { SVGAttributes } from 'svelte/elements';
+
+	export let size: IconSize | string | number = 'base'
+	export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
 
 	const sizeMap = {
 		'sm': '0.875rem',
@@ -153,34 +155,37 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 		'lg': '1.125rem',
 		'xl': '1.25rem',
 		'2xl': '1.5rem'
-	} as const;
+	};
 
 	type IconSize = keyof typeof sizeMap;
 
-	type $$Props = SVGAttributes<SVGElement> & {
-		size?: IconSize | number;
-		altText?: string;
-	};
-
-	let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
-
 	const defaultSize = '1rem';
 
-	$: _size =
-		typeof $$props.size === 'number'
-			? $$props.size
-			: sizeMap[$$props.size as unknown as IconSize] || defaultSize;
+	$: _size = () => {
+		if (typeof size === 'string' && size in sizeMap) return sizeMap[size as unknown as IconSize];
+
+		if (typeof size === 'number' || typeof size === 'string') return size;
+
+		return defaultSize;
+	};
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	width={_size}
-	height={_size}
+	width={_size()}
+	height={_size()}
 	fill="none"
 	stroke-width="1.5"
 	viewBox="0 0 24 24"
 	aria-hidden="true"
 	aria-labelledby={altText}
+	on:click
+	on:dblclick
+	on:change
+	on:keydown
+	on:keyup
+	on:mouseenter
+	on:mouseleave
 	{...$$restProps}
 >
     ${buildIconDataString(iconObj).join(' ')}
