@@ -56,10 +56,10 @@
 		"compile": "tsc --outDir build/scripts",
 		"cpfiles": "node build/scripts/cpFiles.js",
 		"dev": "pnpm sync && vite dev",
-		"format": "prettier --write  --plugin prettier-plugin-svelte .",
+		"format": "prettier --write  .",
 		"generate:icons": "pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
 		"generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
-		"lint": "prettier --check --plugin prettier-plugin-svelte . && eslint .",
+		"lint": "prettier --check . && eslint .",
 		"postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
 		"preview": "vite preview",
 		"sync": "svelte-kit sync"
