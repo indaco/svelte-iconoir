@@ -92,7 +92,6 @@ async function generateFolderTree(iconsOutputFolder: string, icons: Icon[]): Pro
  *
  * @param {string} inputFolder - the folder where the original SVG files are located
  * @param {string} iconsOutputFolder - the folder where the generated icon components will be stored
- * @param {string} indexFile - the path to the index.ts file
  * @param {Icon[]} icons - an array of icons that we'll be generating
  */
 async function generateIconsDataset(
@@ -203,9 +202,8 @@ async function makeIconComponentIndex(outputFolder: string, iconObj: Icon): Prom
 }
 
 /**
- * It takes a filename and an icon object, and appends an export entry to the file.
+ * It takes an icon object, and appends an export entry to the file.
  *
- * @param {string} filename - The name of the file to append to.
  * @param {Icon} iconObj - The icon object from the JSON file.
  */
 async function appendToIndexTs(iconObj: Icon): Promise<void> {
