@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ZoomOutIcon } from '$lib/icons/zoom-out';
+	import { AppleShortcutsIcon } from '$lib/icons/apple-shortcuts';
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -12,3 +13,5 @@
 <ZoomOutIcon on:click={() => alert('2xl')} size="2xl" />
 <ZoomOutIcon on:click={() => alert('2.5em')} size="2.5em" />
 <ZoomOutIcon on:click={() => alert('50')} size={50} />
+
+<AppleShortcutsIcon name="apple-shortcuts" size="2xl" />

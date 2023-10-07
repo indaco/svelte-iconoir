@@ -1,4 +1,5 @@
-import type { ElementNode } from 'svg-parser';
+import type { Nodes } from 'hast-util-to-html/lib/index.js';
+import { toHtml } from 'hast-util-to-html';
 import { parse } from 'svg-parser';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
@@ -13,7 +14,7 @@ type Icon = {
 	component: string;
 	componentFile: string;
 	componentFolder: string;
-	data?: Record<string, string | number>[];
+	data?: string;
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,7 +34,7 @@ async function main() {
 	await mkDir(ICONS_OUTPUT_FOLDER);
 
 	console.log(pc.blue('* Getting list of all icons...'));
-	const files = await fsp.readdir(INPUT_FOLDER);
+	const files = await fsp.readdir(INPUT_FOLDER, 'utf-8');
 	const iconObjs = await makeIconObjsList(files);
 
 	console.log(pc.blue('* Generating folders tree...'));
@@ -91,7 +92,6 @@ async function generateFolderTree(iconsOutputFolder: string, icons: Icon[]): Pro
  *
  * @param {string} inputFolder - the folder where the original SVG files are located
  * @param {string} iconsOutputFolder - the folder where the generated icon components will be stored
- * @param {string} indexFile - the path to the index.ts file
  * @param {Icon[]} icons - an array of icons that we'll be generating
  */
 async function generateIconsDataset(
@@ -104,21 +104,13 @@ async function generateIconsDataset(
 	});
 
 	icons.map(async (icon) => {
-		const iconData = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
-		const parsed = parse(iconData.toString());
-		parsed.children.forEach((item) => {
-			if ((item as ElementNode).children === undefined) return;
+		const svgRaw = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
+		const svgAst = parse(svgRaw);
 
-			icon.data = [];
-			(item as ElementNode).children.forEach(function (child) {
-				if ((child as ElementNode).properties === undefined) return;
-
-				const c = child as ElementNode;
-				if (icon.data != undefined && child != undefined && c.properties != undefined) {
-					icon.data.push(c.properties);
-				}
-			});
-		});
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		const elem: svgParser.RootNode = svgAst.children[0];
+		icon.data = toHtml(elem.children as unknown as Nodes);
 
 		counter++;
 
@@ -145,27 +137,32 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	});
 
 	const txt = `<script lang="ts">
-
-	export let size: IconSize | string | number = 'base'
-	export let altText = '${capitalizeFirstLetter(iconObj.name)} icon';
+	import type { SVGAttributes } from 'svelte/elements';
 
 	const sizeMap = {
-		'sm': '0.875rem',
-		'base': '1rem',
-		'lg': '1.125rem',
-		'xl': '1.25rem',
+		sm: '0.875rem',
+		base: '1rem',
+		lg: '1.125rem',
+		xl: '1.25rem',
 		'2xl': '1.5rem'
 	};
 
 	type IconSize = keyof typeof sizeMap;
 
-	const defaultSize = '1rem';
+	interface $$Props extends SVGAttributes<SVGElement> {
+		size?: IconSize | string | number;
+		altText?: string;
+	}
+
+	export let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
+
+	const defaultSize = sizeMap['base'];
 
 	$: _size =
-		size in sizeMap
-			? sizeMap[size as unknown as IconSize]
-			: typeof size === 'number' || typeof size === 'string'
-			? size
+		$$props.size in sizeMap
+			? sizeMap[$$props.size as unknown as IconSize]
+			: typeof $$props.size === 'number' || typeof $$props.size === 'string'
+			? $$props.size
 			: defaultSize;
 </script>
 
@@ -186,7 +183,7 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	on:mouseleave
 	{...$$restProps}
 >
-    ${buildIconDataString(iconObj).join(' ')}
+	${iconObj.data}
 </svg>`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
@@ -205,29 +202,8 @@ async function makeIconComponentIndex(outputFolder: string, iconObj: Icon): Prom
 }
 
 /**
- * It takes an Icon object and returns an array of strings.
+ * It takes an icon object, and appends an export entry to the file.
  *
- * @param {Icon} icon - Icon - The icon object that we're building the SVG string for.
- *
- * @returns An array of strings.
- */
-function buildIconDataString(icon: Icon): string[] {
-	// <path (key="value"...)/>
-	if (icon.data != undefined) {
-		return icon.data.map(
-			(item) =>
-				`<path ${Object.entries(item)
-					.map(([key, value]) => `${key}="${value}" `)
-					.join('')}/>`
-		);
-	}
-	return [];
-}
-
-/**
- * It takes a filename and an icon object, and appends an export entry to the file.
- *
- * @param {string} filename - The name of the file to append to.
  * @param {Icon} iconObj - The icon object from the JSON file.
  */
 async function appendToIndexTs(iconObj: Icon): Promise<void> {
