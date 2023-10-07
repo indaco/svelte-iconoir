@@ -165,17 +165,17 @@ The underlying properties can also be set and overriden manually, e.g. setting `
 ```javascript
 /**
  * The size of the icon.
- * @typedef {('sm'|'base'|'lg'|'xl'|'2xl'|number|string)} IconSize
+ * @typedef {(‘xs’|’sm’|’base’|’lg’|’xl’|number|string)} IconSize
  */
 ```
 
-| Size | Value      |
-| :--- | ---------: |
-| sm   | `0.875rem` |
-| base | `1rem`     |
-| lg   | `1.125rem` |
-| xl   | `1.25rem`  |
-| 2xl  | `1.5rem`   |
+| Size | Value     |
+| :--- | --------: |
+| xs   | `1rem`    |
+| sm   | `1.25rem` |
+| base | `1.5rem`  |
+| lg   | `1.75rem` |
+| xl   | `2rem`    |
 
 ## Event Forwarding
 

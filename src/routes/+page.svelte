@@ -8,10 +8,19 @@
 
 <br />
 
+<ZoomOutIcon on:click={() => alert('xs')} size="xs" />
 <ZoomOutIcon on:click={() => alert('sm')} size="sm" />
+<ZoomOutIcon on:click={() => alert('base')} />
+<ZoomOutIcon on:click={() => alert('lg')} size="lg" />
 <ZoomOutIcon on:click={() => alert('xl')} size="xl" />
-<ZoomOutIcon on:click={() => alert('2xl')} size="2xl" />
-<ZoomOutIcon on:click={() => alert('2.5em')} size="2.5em" />
-<ZoomOutIcon on:click={() => alert('50')} size={50} />
+<ZoomOutIcon on:click={() => alert('3rem')} size="3rem" />
+<ZoomOutIcon on:click={() => alert('60')} size={60} />
 
-<AppleShortcutsIcon name="apple-shortcuts" size="2xl" />
+<br />
+<AppleShortcutsIcon name="apple-shortcuts" size="xs" />
+<AppleShortcutsIcon name="apple-shortcuts" size="sm" />
+<AppleShortcutsIcon name="apple-shortcuts" size="base" />
+<AppleShortcutsIcon name="apple-shortcuts" size="lg" />
+<AppleShortcutsIcon name="apple-shortcuts" size="xl" />
+<AppleShortcutsIcon name="apple-shortcuts" size="3rem" />
+<AppleShortcutsIcon name="apple-shortcuts" size="60" />

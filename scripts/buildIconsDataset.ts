@@ -140,12 +140,12 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
 	import type { SVGAttributes } from 'svelte/elements';
 
 	const sizeMap = {
-		sm: '0.875rem',
-		base: '1rem',
-		lg: '1.125rem',
-		xl: '1.25rem',
-		'2xl': '1.5rem'
-	};
+		xs: '1rem',
+		sm: '1.25rem',
+		base: '1.5rem',
+		lg: '1.75rem',
+		xl: '2rem'
+  };
 
 	type IconSize = keyof typeof sizeMap;
 
