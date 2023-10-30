@@ -1,21 +1,21 @@
 import type { Nodes } from 'hast-util-to-html/lib/index.js';
+import type { Icon, IconVariant } from './index.d.ts';
 import { toHtml } from 'hast-util-to-html';
 import { parse } from 'svg-parser';
 import { fileURLToPath } from 'node:url';
-import { join, dirname } from 'node:path';
+import { join, dirname, basename } from 'node:path';
 import { promises as fsp } from 'node:fs';
 import cliProgress from 'cli-progress';
 import pc from 'picocolors';
-import { mkDir, makeComponentFilename, makeComponentName, capitalizeFirstLetter } from './utils.js';
 
-type Icon = {
-	svgFile: string;
-	name: string;
-	component: string;
-	componentFile: string;
-	componentFolder: string;
-	data?: string;
-};
+import {
+	mkDir,
+	makeComponentFilename,
+	makeComponentName,
+	capitalizeFirstLetter,
+	generateIconComponentIndex,
+	generateExportEntryString
+} from './utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,9 +23,13 @@ const __dirname = dirname(__filename);
 const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons');
 const ICONS_OUTPUT_FOLDER = join(__dirname, '..', '..', 'src', 'lib', 'icons');
 
+const REGULAR_ICONS = join(INPUT_FOLDER, 'regular');
+const SOLID_ICONS = join(INPUT_FOLDER, 'solid');
+const ICONS_FOLDERS = [REGULAR_ICONS, SOLID_ICONS];
+
 let counter = 0;
 
-// create a new progress bar instance with the shades_classic theme.
+// Create a new progress bar instance with the shades_classic theme.
 const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_grey);
 
 // ----------------------------------------------------------------
@@ -34,14 +38,16 @@ async function main() {
 	await mkDir(ICONS_OUTPUT_FOLDER);
 
 	console.log(pc.blue('* Getting list of all icons...'));
-	const files = await fsp.readdir(INPUT_FOLDER, 'utf-8');
-	const iconObjs = await makeIconObjsList(files);
 
-	console.log(pc.blue('* Generating folders tree...'));
-	await generateFolderTree(ICONS_OUTPUT_FOLDER, iconObjs);
+	console.log(pc.blue('* Generating icon components...'));
+	for (const folder of ICONS_FOLDERS) {
+		const folderName = basename(folder);
+		const files = await fsp.readdir(folder, 'utf-8');
+		const icons = await makeIconObjsList(folderName, files);
 
-	console.log(pc.blue('* Generating icon components...\n'));
-	await generateIconsDataset(INPUT_FOLDER, ICONS_OUTPUT_FOLDER, iconObjs);
+		await generateFolderTree(join(ICONS_OUTPUT_FOLDER, folderName), icons);
+		await generateIconsDataset(folder, join(ICONS_OUTPUT_FOLDER, folderName), icons);
+	}
 }
 
 // ----------------------------------------------------------------
@@ -55,23 +61,26 @@ async function main() {
  *
  * @returns An array of Icon objects.
  */
-async function makeIconObjsList(files: string[]): Promise<Icon[]> {
-	return files.reduce((acc: Icon[], curr: string) => {
-		const svgFile = curr;
-		const name = curr.split('.').slice(0, -1).join('.');
-		const componentFolder = name;
-		const component = makeComponentName(name);
-		const componentFile = makeComponentFilename(component);
+async function makeIconObjsList(folder: string, files: string[]): Promise<Icon[]> {
+	return Promise.all(
+		files.map(async (file) => {
+			const svgFile = file;
+			const name = file.split('.').slice(0, -1).join('.');
+			const variant = folder as IconVariant;
+			const componentFolder = name;
+			const component = makeComponentName(name);
+			const componentFile = makeComponentFilename(component);
 
-		acc.push({
-			svgFile,
-			name,
-			component,
-			componentFile,
-			componentFolder
-		} satisfies Icon);
-		return acc;
-	}, [] as Icon[]);
+			return {
+				svgFile,
+				name,
+				variant,
+				component,
+				componentFile,
+				componentFolder
+			};
+		})
+	);
 }
 
 /**
@@ -81,9 +90,11 @@ async function makeIconObjsList(files: string[]): Promise<Icon[]> {
  * @param {Icon[]} icons  - this is the array of icon objects.
  */
 async function generateFolderTree(iconsOutputFolder: string, icons: Icon[]): Promise<void> {
-	icons.map(async (icon) => {
-		await mkDir(join(iconsOutputFolder, icon.componentFolder));
-	});
+	await Promise.all(
+		icons.map(async (icon) => {
+			await mkDir(join(iconsOutputFolder, icon.componentFolder));
+		})
+	);
 }
 
 /**
@@ -103,26 +114,32 @@ async function generateIconsDataset(
 		filename: 'N/A'
 	});
 
-	icons.map(async (icon) => {
-		const svgRaw = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
-		const svgAst = parse(svgRaw);
+	await Promise.all(
+		icons.map(async (icon) => {
+			const svgRaw = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
+			const svgAst = parse(svgRaw);
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		const elem: svgParser.RootNode = svgAst.children[0];
-		icon.data = toHtml(elem.children as unknown as Nodes);
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			const elem: svgParser.RootNode = svgAst.children[0];
+			icon.data = toHtml(elem.children as unknown as Nodes);
 
-		counter++;
+			counter++;
 
-		// generate svelte component for each icon
-		await makeIconComponent(iconsOutputFolder, icon);
-		// generate index.ts and index.d.ts files for each icon
-		await makeIconComponentIndex(iconsOutputFolder, icon);
-		// append an entry to index.ts file
-		await appendToIndexTs(icon);
+			// generate svelte component for each icon
+			await makeIconComponent(iconsOutputFolder, icon);
+			// generate index.ts and index.d.ts files for each icon
+			await generateIconComponentIndex(iconsOutputFolder, icon);
+			// append an entry to index.ts file
+			await appendToIndexTs(icon);
 
-		progressBar.stop();
-	});
+			progressBar.update(counter, {
+				filename: `${icon.componentFile}`
+			});
+		})
+	);
+
+	progressBar.stop();
 }
 
 /**
@@ -132,73 +149,59 @@ async function generateIconsDataset(
  * @param {Icon} iconObj - The icon object from the icons.json file
  */
 async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<void> {
-	progressBar.update(counter, {
-		filename: `${iconObj.componentFile}`
-	});
-
 	const txt = `<script lang="ts">
-	import type { SVGAttributes } from 'svelte/elements';
+  import type { SVGAttributes } from 'svelte/elements';
 
-	const sizeMap = {
-		xs: '1rem',
-		sm: '1.25rem',
-		base: '1.5rem',
-		lg: '1.75rem',
-		xl: '2rem'
+  const sizeMap = {
+    xs: '1rem',
+    sm: '1.25rem',
+    base: '1.5rem',
+    lg: '1.75rem',
+    xl: '2rem',
   };
 
-	type IconSize = keyof typeof sizeMap;
+  type IconSize = keyof typeof sizeMap;
 
-	interface $$Props extends SVGAttributes<SVGElement> {
-		size?: IconSize | string | number;
-		altText?: string;
-	}
+  interface $$Props extends SVGAttributes<SVGElement> {
+    size?: IconSize | string | number;
+    altText?: string;
+  }
 
-	export let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
+  export let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
 
-	const defaultSize = sizeMap['base'];
+  const defaultSize = sizeMap['base'];
 
-	$: _size =
-		$$props.size in sizeMap
-			? sizeMap[$$props.size as unknown as IconSize]
-			: typeof $$props.size === 'number' || typeof $$props.size === 'string'
-			? $$props.size
-			: defaultSize;
+  let _size: string;
+
+  $: _size =
+    $$props.size in sizeMap
+      ? sizeMap[$$props.size as unknown as IconSize]
+      : typeof $$props.size === 'number' || typeof $$props.size === 'string'
+      ? $$props.size
+      : defaultSize;
 </script>
 
 <svg
-	xmlns="http://www.w3.org/2000/svg"
-	width={_size}
-	height={_size}
-	fill="none"
-	stroke-width="1.5"
-	viewBox="0 0 24 24"
-	aria-hidden="true"
-	aria-labelledby={altText}
-	on:click
-	on:dblclick
-	on:keydown
-	on:keyup
-	on:mouseenter
-	on:mouseleave
-	{...$$restProps}
+  xmlns="http://www.w3.org/2000/svg"
+  width={_size}
+  height={_size}
+  fill="none"
+  stroke-width="1.5"
+  viewBox="0 0 24 24"
+  aria-hidden="true"
+  aria-labelledby={altText}
+  on:click
+  on:dblclick
+  on:keydown
+  on:keyup
+  on:mouseenter
+  on:mouseleave
+  {...$$restProps}
 >
-	${iconObj.data}
+  ${iconObj.data}
 </svg>`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
-}
-
-/**
- * It writes a file called `index.ts` in the folder for each icon, which exports the icon component.
- *
- * @param {string} outputFolder - The folder where the icon component will be created.
- * @param {Icon} iconObj - The icon object from the icons.json file.
- */
-async function makeIconComponentIndex(outputFolder: string, iconObj: Icon): Promise<void> {
-	const txt = `export { default as ${iconObj.component} } from './${iconObj.componentFile}';`;
-
-	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, 'index.ts'), txt);
 }
 
 /**
@@ -207,18 +210,14 @@ async function makeIconComponentIndex(outputFolder: string, iconObj: Icon): Prom
  * @param {Icon} iconObj - The icon object from the JSON file.
  */
 async function appendToIndexTs(iconObj: Icon): Promise<void> {
-	const indexFile = join(__dirname, '..', '..', 'src', 'lib', 'index.ts');
-	const exportString = makeExportEntryString(iconObj);
+	const indexFile = join(__dirname, '..', '..', 'src', 'lib', 'icons', iconObj.variant, 'index.ts');
+	const exportString = generateExportEntryString(iconObj);
 
 	progressBar.update(counter, {
 		filename: `${iconObj.componentFile}`
 	});
 
 	await fsp.appendFile(indexFile, exportString);
-}
-
-function makeExportEntryString(iconObj: Icon): string {
-	return `export { ${iconObj.component} } from './icons/${iconObj.componentFolder}/index.js';\n`;
 }
 
 // ----------------------------------------------------------------
