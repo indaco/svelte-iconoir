@@ -5,17 +5,15 @@ import pc from 'picocolors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const sourceDir = join(__dirname, '..', '..');
+const distDir = join(sourceDir, 'dist');
 
-console.log(pc.blue('* Copying README.md to the dist folder...'));
-copyFileSync(
-	join(__dirname, '..', '..', 'README.md'),
-	join(__dirname, '..', '..', 'dist', 'README.md')
-);
+console.log(pc.blue('* Copying README.md and LICENSE to the dist folder...'));
 
-console.log(pc.blue('* Copying LICENSE to the dist folder...'));
-copyFileSync(
-	join(__dirname, '..', '..', 'LICENSE'),
-	join(__dirname, '..', '..', 'dist', 'LICENSE')
-);
+const filesToCopy = ['README.md', 'LICENSE'];
+
+filesToCopy.forEach((file) => {
+	copyFileSync(join(sourceDir, file), join(distDir, file));
+});
 
 console.log(pc.green(pc.bold('* Done!\n')));
