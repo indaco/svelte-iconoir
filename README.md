@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoir@4.7.2` matches `iconoir@6.11.0`
+> `svelte-iconoir@5.0.0` matches `iconoir@7.0.0`
 
 ## Install
 
@@ -36,22 +36,22 @@ yarn add @indaco/svelte-iconoir
 
 ```html
 <script>
-  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_name>';
+  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/regular/<icon_name>';
 </script>
 ```
 
 where:
 
-- `<ComponentName>`: icon name as _CamelCase_ notation
+- `<ComponentName>`: named as _PascalCase_ variations of the icon name
 - `<icon_name>`: the original icon name as per iconoir.com
 
 ### Example
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
   // or...
-  import SunLightIcon from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
+  import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
 </script>
 ```
 
@@ -68,27 +68,6 @@ The naming convention above has few exceptions breaking it:
 
 | Icon Name                | Component Name           |
 | :----------------------- | :----------------------- |
-| 1st-medal                | Medal1stIcon             |
-| 2x2-cell                 | Cell2x2Icon              |
-| 3d-add-hole              | AddHole3dIcon            |
-| 3d-arc-center-pt         | ArcCenterPt3dIcon        |
-| 3d-arc                   | Arc3dIcon                |
-| 3d-bridge                | Bridge3dIcon             |
-| 3d-center-box            | CenterBox3dIcon          |
-| 3d-draft-face            | DraftFace3dIcon          |
-| 3d-ellipse-three-pts     | EllipseThreePts3dIcon    |
-| 3d-ellipse               | Ellipse3dIcon            |
-| 3d-pt-box                | PtBox3dIcon              |
-| 3d-rect-corner-to-corner | RectCornerToCorner3dIcon |
-| 3d-rect-from-center      | RectFromCenter3dIcon     |
-| 3d-rect-three-pts        | RectThreePts3dIcon       |
-| 3d-select-edge           | SelectEdge3dIcon         |
-| 3d-select-face           | SelectFace3dIcon         |
-| 3d-select-point          | SelectPoint3dIcon        |
-| 3d-select-solid          | SelectSolid3dIcon        |
-| 3d-three-pts-box         | ThreePtsBoxe3dIcon       |
-| 4k-display               | Display4kIcon            |
-| 360-view                 | View360Icon              |
 | github                   | GitHubIcon               |
 | github-circle            | GitHubCircleIcon         |
 | gitlab-full              | GitLabFullIcon           |
@@ -104,7 +83,7 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
 </script>
 
 <SunLightIcon class="roundedColor" />
@@ -123,10 +102,10 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
- import { View360Icon } from '@indaco/svelte-iconoir/360-view';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
 </script>
 
-<View360Icon
+<SunLightIcon
  style="background-color: green; padding: 4px; border-radius: 9999px;"
  color="#ffffff" />
 ```
@@ -135,10 +114,10 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
- import { ActivityIcon } from '@indaco/svelte-iconoir/activity';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
 </script>
 
-<ActivityIcon class="p-1 rounded-full border-2 bg-green-400" size="2xl" />
+<SunLightIcon class="p-1 rounded-full border-2 bg-green-400" size="2xl" />
 ```
 
 ## Properties
@@ -194,10 +173,10 @@ For example, you can set the `on:click` event on all icons.
 
 ```html
 <script>
- import { ActivityIcon } from '@indaco/svelte-iconoir/activity';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
 </script>
 
-<ActivityIcon on:click={() => alert("hi!")} />
+<SunLightIcon on:click={() => alert("hi!")} />
 ```
 
 ## Dev Flow
