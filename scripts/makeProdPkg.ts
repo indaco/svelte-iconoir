@@ -31,20 +31,18 @@ const makeComponentPaths = (iconVariant: string, filename: string, componentFile
 		types: relativePath(`${base}.d.ts`),
 		svelte: relativePath(base),
 		default: relativePath(base)
-	};
+	} satisfies SvelteComponentExportItem;
 };
 
 function main() {
 	console.log(pc.blue('* Generating the package.json file...'));
 
-	let entries: PkgExports = {};
-	let typesVersion: PkgTypesVersions = {};
+	const entries: PkgExports = {};
+	const typesVersion: PkgTypesVersions = { '>4.0': {} };
 
 	ICONS_FOLDERS.forEach((folder) => {
 		try {
 			const files = readdirSync(folder);
-			entries = {};
-			typesVersion = { '>4.0': {} };
 
 			files.forEach((filename) => {
 				const iconVariantName = basename(folder);
