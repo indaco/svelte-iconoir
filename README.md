@@ -36,13 +36,14 @@ yarn add @indaco/svelte-iconoir
 
 ```html
 <script>
-  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/regular/<icon_name>';
+  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_variant>/<icon_name>';
 </script>
 ```
 
 where:
 
 - `<ComponentName>`: named as _PascalCase_ variations of the icon name
+- `<icon_variant>`: `regular` or `solid` (refer to [iconoir.com](https://iconoir.com))
 - `<icon_name>`: the original icon name as per iconoir.com
 
 ### Example
@@ -54,8 +55,6 @@ where:
   import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
 </script>
 ```
-
-> **Note:** you can still import and use the icon as `import { <component_name>Icon } from '@indaco/svelte-iconoir';` but this will have performace issue when the server run due to the import of the entire icons set.
 
 ### Exceptions
 
