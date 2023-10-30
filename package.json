@@ -27,7 +27,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.1.0",
-		"@sveltejs/kit": "^1.27.1",
+		"@sveltejs/kit": "^1.27.2",
 		"@sveltejs/package": "^2.2.2",
 		"@types/cli-progress": "^3.11.4",
 		"@types/svg-parser": "^2.0.5",
