@@ -36,13 +36,14 @@ yarn add @indaco/svelte-iconoir
 
 ```html
 <script>
-  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/regular/<icon_name>';
+  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_variant>/<icon_name>';
 </script>
 ```
 
 where:
 
 - `<ComponentName>`: named as _PascalCase_ variations of the icon name
+- `<icon_variant>`: `regular` or `solid` (refer to [iconoir.com](https://iconoir.com))
 - `<icon_name>`: the original icon name as per iconoir.com
 
 ### Example
