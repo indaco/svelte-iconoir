@@ -56,8 +56,6 @@ where:
 </script>
 ```
 
-> **Note:** you can still import and use the icon as `import { <component_name>Icon } from '@indaco/svelte-iconoir';` but this will have performace issue when the server run due to the import of the entire icons set.
-
 ### Exceptions
 
 The naming convention above has few exceptions breaking it:
