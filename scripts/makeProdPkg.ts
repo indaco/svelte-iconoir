@@ -64,36 +64,31 @@ function main() {
 
 					if (iconVariantName === 'regular') {
 						entries[relativePath(iconName)] = iconPaths;
-					}
-					entries[relativePath(join(iconVariantName, iconName))] = iconPaths;
-
-					// Direct access to the component
-					if (iconVariantName === 'regular') {
 						entries[relativePath(join(COMPONENTS_FOLDER, makeComponentFilename(iconComponent)))] =
 							componentPaths;
+					} else {
+						entries[relativePath(join(iconVariantName, iconName))] = iconPaths;
+						entries[
+							relativePath(
+								join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
+							)
+						] = componentPaths;
 					}
-					entries[
-						relativePath(
-							join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
-						)
-					] = componentPaths;
 
 					// Build typesVersions
 					if (iconVariantName === 'regular') {
 						typesVersion['>4.0'][relativePath(iconName)] = [iconPaths.types];
-					}
-					typesVersion['>4.0'][relativePath(join(iconVariantName, iconName))] = [iconPaths.types];
-
-					if (iconVariantName === 'regular') {
 						typesVersion['>4.0'][
 							relativePath(join(COMPONENTS_FOLDER, makeComponentFilename(iconComponent)))
 						] = [componentPaths.types];
+					} else {
+						typesVersion['>4.0'][relativePath(join(iconVariantName, iconName))] = [iconPaths.types];
+						typesVersion['>4.0'][
+							relativePath(
+								join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
+							)
+						] = [componentPaths.types];
 					}
-					typesVersion['>4.0'][
-						relativePath(
-							join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
-						)
-					] = [componentPaths.types];
 				} catch (error) {
 					console.error('Error processing file:', error);
 					// Handle or log the error as needed
