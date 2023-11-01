@@ -1,4 +1,9 @@
-import type { PkgExports, PkgTypesVersions, SvelteComponentExportItem } from './index.js';
+import type {
+	IconVariant,
+	PkgExports,
+	PkgTypesVersions,
+	SvelteComponentExportItem
+} from './index.js';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, basename } from 'node:path';
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -45,7 +50,7 @@ function main() {
 			const files = readdirSync(folder);
 
 			files.forEach((filename) => {
-				const iconVariantName = basename(folder);
+				const iconVariantName = basename(folder) as IconVariant;
 				const iconName = filename.split('.').slice(0, -1).join('.');
 				const iconComponent = makeComponentName(iconName);
 
@@ -57,18 +62,36 @@ function main() {
 						makeComponentFilename(iconComponent)
 					);
 
+					if (iconVariantName === 'regular') {
+						entries[relativePath(iconName)] = iconPaths;
+					}
 					entries[relativePath(join(iconVariantName, iconName))] = iconPaths;
+
+					// Direct access to the component
+					if (iconVariantName === 'regular') {
+						entries[relativePath(join(COMPONENTS_FOLDER, makeComponentFilename(iconComponent)))] =
+							componentPaths;
+					}
 					entries[
 						relativePath(
-							join(iconVariantName, COMPONENTS_FOLDER, makeComponentFilename(iconComponent))
+							join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
 						)
 					] = componentPaths;
 
 					// Build typesVersions
+					if (iconVariantName === 'regular') {
+						typesVersion['>4.0'][relativePath(iconName)] = [iconPaths.types];
+					}
 					typesVersion['>4.0'][relativePath(join(iconVariantName, iconName))] = [iconPaths.types];
+
+					if (iconVariantName === 'regular') {
+						typesVersion['>4.0'][
+							relativePath(join(COMPONENTS_FOLDER, makeComponentFilename(iconComponent)))
+						] = [componentPaths.types];
+					}
 					typesVersion['>4.0'][
 						relativePath(
-							join(iconVariantName, COMPONENTS_FOLDER, makeComponentFilename(iconComponent))
+							join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
 						)
 					] = [componentPaths.types];
 				} catch (error) {

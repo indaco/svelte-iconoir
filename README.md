@@ -43,15 +43,19 @@ yarn add @indaco/svelte-iconoir
 where:
 
 - `<ComponentName>`: named as _PascalCase_ variations of the icon name
-- `<icon_variant>`: `regular` or `solid` (refer to [iconoir.com](https://iconoir.com))
+- `<icon_variant>`: `regular` or `solid` (refer to [iconoir.com](https://iconoir.com)). `regular` is the default one and can be omitted.
 - `<icon_name>`: the original icon name as per iconoir.com
 
 ### Example
 
 ```html
 <script>
-  import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
   // or...
+  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
+
+  import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
+  // or component import
   import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
 </script>
 ```
@@ -82,7 +86,7 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon class="roundedColor" />
@@ -101,7 +105,7 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon
@@ -113,7 +117,7 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon class="p-1 rounded-full border-2 bg-green-400" size="2xl" />
@@ -172,7 +176,7 @@ For example, you can set the `on:click` event on all icons.
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon on:click={() => alert("hi!")} />
