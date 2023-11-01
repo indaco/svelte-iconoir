@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoir@5.0.1` matches `iconoir@7.0.0`
+> `svelte-iconoir@6.0.0` matches `iconoir@7.0.0`
 
 ## Install
 
@@ -43,7 +43,9 @@ yarn add @indaco/svelte-iconoir
 where:
 
 - `<ComponentName>`: named as _PascalCase_ variations of the icon name
-- `<icon_variant>`: `regular` or `solid` (refer to [iconoir.com](https://iconoir.com)). `regular` is the default one and can be omitted.
+- `<icon_variant>`:
+  - `regular` variant is the **default** one and does not need to be specified
+  - `solid` (check on [iconoir.com](https://iconoir.com) if available)
 - `<icon_name>`: the original icon name as per iconoir.com
 
 ### Example
@@ -52,8 +54,9 @@ where:
 <script>
   import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
   // or...
-  import { SunLightIcon } from '@indaco/svelte-iconoir/regular/sun-light';
+  import  SunLightIcon  from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
 
+  // variant `solid`
   import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
   // or component import
   import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
