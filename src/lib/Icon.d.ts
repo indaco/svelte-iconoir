@@ -23,8 +23,8 @@ export type Icon = {
 type SVGRestProps = SvelteHTMLElements['svg'];
 
 interface SVGPropsInternal extends SVGRestProps {
-	name: string;
-	size: IconSize | string | number;
+	name?: string;
+	size?: IconSize | string | number;
 	altText?: string;
 }
 

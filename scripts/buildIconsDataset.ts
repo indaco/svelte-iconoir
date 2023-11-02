@@ -149,12 +149,14 @@ async function generateIconsDataset(
  */
 async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<void> {
 	const txt = `<script lang="ts">
-  import type { IconSize } from '../../../Icon.d.ts';
+  import type { SVGProps } from '../../../Icon.d.ts';
   import IconBase from '../../../IconBase.svelte';
 
-  export let name: string = 'zoom-out';
-  export let altText: string | undefined = undefined;
-  export let size: IconSize | string | number = 'base';
+  interface $$Props extends SVGProps {}
+
+  export let name: $$Props['name'] = '${iconObj.name}';
+  export let altText: $$Props['altText'] = undefined;
+  export let size: $$Props['size'] = 'base';
 </script>
 
 <IconBase {name} {altText} {size}

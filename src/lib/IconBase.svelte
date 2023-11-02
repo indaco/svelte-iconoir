@@ -11,7 +11,7 @@
 
 	interface $$Props extends SVGProps {}
 
-	export let name: $$Props['name'];
+	export let name: $$Props['name'] = undefined;
 	export let altText: $$Props['altText'] = undefined;
 	export let size: $$Props['size'] = 'base';
 
@@ -20,7 +20,7 @@
 	let _altText = altText ?? `${name} icon`;
 
 	let _size =
-		size in sizeMap
+		size && size in sizeMap
 			? sizeMap[size as unknown as IconSize]
 			: typeof size === 'number' || typeof size === 'string'
 			? size
