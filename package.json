@@ -43,6 +43,7 @@
 		"prettier-plugin-svelte": "^3.0.3",
 		"publint": "^0.2.5",
 		"rimraf": "^5.0.5",
+		"scule": "^1.0.0",
 		"svelte-check": "^3.5.2",
 		"svg-parser": "^2.0.4",
 		"tslib": "^2.6.2",

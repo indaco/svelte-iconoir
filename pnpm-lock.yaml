@@ -61,6 +61,9 @@ devDependencies:
   rimraf:
     specifier: ^5.0.5
     version: 5.0.5
+  scule:
+    specifier: ^1.0.0
+    version: 1.0.0
   svelte-check:
     specifier: ^3.5.2
     version: 3.5.2(postcss@8.4.31)(svelte@4.2.1)
@@ -2010,6 +2013,10 @@ packages:
       graceful-fs: 4.2.11
       mkdirp: 0.5.6
       rimraf: 2.7.1
+    dev: true
+
+  /scule@1.0.0:
+    resolution: {integrity: sha512-4AsO/FrViE/iDNEPaAQlb77tf0csuq27EsVpy6ett584EcRTp6pTDLoGWVxCD77y5iU5FauOvhsI4o1APwPoSQ==}
     dev: true
 
   /semver@7.5.4:
