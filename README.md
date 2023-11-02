@@ -123,7 +123,7 @@ You can apply your own styles to the icon components in different ways:
   import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
-<SunLightIcon class="p-1 rounded-full border-2 bg-green-400" size="2xl" />
+<SunLightIcon class="p-1 rounded-full border-2 bg-green-400" size="xl" />
 ```
 
 ## Properties
@@ -132,8 +132,6 @@ Each icon component can take any property of a normal SVG Element, for example:
 
 | Property    | Type       | Default   | Description                                           |
 | :---------- | :--------- | :-------- | :---------------------------------------------------- |
-| color       | `string`   | `none`    | Set the fill colour to be applied to the icon         |
-| strokeWidth | `number`   | `1.5`     | Set the width of the stroke to be applied to the icon |
 | style       | `string`   |           | Set the `style` attribute on the rendered svg         |
 | class       | `string`   |           | Set the `class` attribute on the rendered svg         |
 | ... |
@@ -156,11 +154,11 @@ The underlying properties can also be set and overriden manually, e.g. setting `
 
 | Size | Value     |
 | :--- | --------: |
-| xs   | `1rem`    |
-| sm   | `1.25rem` |
-| base | `1.5rem`  |
-| lg   | `1.75rem` |
-| xl   | `2rem`    |
+| xs   | `1em`    |
+| sm   | `1.25em` |
+| base | `1.5em`  |
+| lg   | `1.75em` |
+| xl   | `2em`    |
 
 ## Event Forwarding
 
