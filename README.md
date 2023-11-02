@@ -128,20 +128,20 @@ You can apply your own styles to the icon components in different ways:
 
 ## Properties
 
-Each icon component can take any property of a normal SVG Element, for example:
+Each icon component can take any attribute of a normal SVG Element, for example:
 
-| Property    | Type       | Default   | Description                                           |
-| :---------- | :--------- | :-------- | :---------------------------------------------------- |
-| style       | `string`   |           | Set the `style` attribute on the rendered svg         |
-| class       | `string`   |           | Set the `class` attribute on the rendered svg         |
-| ... |
+```html
+  <ZoomOutIcon fill="red" stroke-width="3" />
+```
 
 In addition to these, each component can take the following properties:
 
 | Property    | Type       | Default   | Description                                           |
 | :---------- | :--------- | :-------- | :---------------------------------------------------- |
-| size        | `IconSize` | `base`    | Set the attributes `width` and `height`                              |
+| size        | `IconSize` | `base`    | Set the attributes `width` and `height`               |
 | altText     | `string`   | icon name | Set the `aria-labelledby` attribute on the svg        |
+| style       | `string`   |           | Set the `style` attribute on the rendered svg         |
+| class       | `string`   |           | Set the `class` attribute on the rendered svg         |
 
 The underlying properties can also be set and overriden manually, e.g. setting `width` explicitly takes precedence over `size`.
 
