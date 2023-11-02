@@ -14,7 +14,7 @@
 <ZoomOutIcon on:click={() => alert('base')} />
 <ZoomOutIcon on:click={() => alert('lg')} size="lg" />
 <ZoomOutIcon on:click={() => alert('xl')} size="xl" />
-<ZoomOutIcon on:click={() => alert('3rem')} size="3rem" />
+<ZoomOutIcon on:click={() => alert('3em')} size="3em" />
 <ZoomOutIcon on:click={() => alert('60')} size={60} />
 
 <br />
@@ -23,5 +23,5 @@
 <MinusCircleIcon name="minus-circle-solid" size="base" />
 <MinusCircleIcon name="minus-circle-solid" size="lg" />
 <MinusCircleIcon name="minus-circle-solid" size="xl" />
-<MinusCircleIcon name="minus-circle-solid" size="3rem" />
+<MinusCircleIcon name="minus-circle-solid" size="3em" />
 <MinusCircleIcon name="minus-circle-solid" size="60" />
