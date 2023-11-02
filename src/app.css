@@ -1,0 +1,14 @@
+main {
+	padding: 1rem 0.5rem;
+}
+
+.header {
+	text-align: center;
+}
+
+.roundedColor {
+	padding: 4px;
+	background-color: yellow;
+	border: 1px solid #d1d5db;
+	border-radius: 1rem;
+}
