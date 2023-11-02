@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoir@6.0.0` matches `iconoir@7.0.0`
+> `svelte-iconoir@6.0.1` matches `iconoir@7.0.0`
 
 ## Install
 
@@ -44,7 +44,7 @@ where:
 
 - `<ComponentName>`: named as _PascalCase_ variations of the icon name
 - `<icon_variant>`:
-  - `regular` variant is the **default** one and does not need to be specified
+  - `regular` variant is the **default one and does not need to be specified**
   - `solid` (check on [iconoir.com](https://iconoir.com) if available)
 - `<icon_name>`: the original icon name as per iconoir.com
 
@@ -67,9 +67,7 @@ where:
 
 The naming convention above has few exceptions breaking it:
 
-1. icons whose name starts with a number:
-    - to be a valid Svelte component it must start with capital letter, refer to [Template Syntax Tags];
-2. icons for companies (github, youtube etc.):
+1. icons for companies (github, youtube etc.):
     - to reflect the real company names (GitHub, YouTube, etc.).
 
 | Icon Name                | Component Name           |
