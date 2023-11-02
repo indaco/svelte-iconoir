@@ -80,9 +80,10 @@ build
 $RECYCLE.BIN/
 
 # Directories
-src/lib/
+src/lib/icons
 
 # Files
+
 src/lib/index.ts
 packages/iconoir
 package-lock.json

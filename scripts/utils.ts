@@ -1,10 +1,7 @@
 import type { Icon } from './index.d.ts';
 import { join } from 'node:path';
 import { promises as fsp } from 'node:fs';
-
-export function capitalizeFirstLetter(string: string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
+import { camelCase, pascalCase } from 'scule';
 
 export async function mkDir(pathToDir: string, recursive = true) {
 	await fsp.mkdir(pathToDir, { recursive });
@@ -24,8 +21,8 @@ export function makeComponentName(filename: string) {
 		youtube: 'YouTubeIcon'
 	};
 
-	const specialCase = specialCases[toCamelCase(filename)];
-	return specialCase ? specialCase : `${toPascalCase(filename)}Icon`;
+	const specialCase = specialCases[camelCase(filename)];
+	return specialCase ? specialCase : `${pascalCase(filename)}Icon`;
 }
 
 export function makeComponentFilename(component: string): string {
@@ -53,16 +50,4 @@ export async function generateIconComponentIndex(
 
 export function generateExportEntryString(iconObj: Icon): string {
 	return `export { ${iconObj.component} } from './${iconObj.componentFolder}/index.js';\n`;
-}
-
-// ----------------------------------------------------------------
-
-function toPascalCase(str: string) {
-	const text = str.replace(/(?:^|-)([a-z0-9])/g, (_, char) => char.toUpperCase());
-	return text.replace(/ /g, '');
-}
-
-function toCamelCase(str: string) {
-	const text = str.replace(/-([a-z0-9])/g, (g) => g[1].toUpperCase());
-	return text.replaceAll(/ /g, '');
 }

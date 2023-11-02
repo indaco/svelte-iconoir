@@ -12,7 +12,6 @@ import {
 	mkDir,
 	makeComponentFilename,
 	makeComponentName,
-	capitalizeFirstLetter,
 	generateIconComponentIndex,
 	generateExportEntryString
 } from './utils.js';
@@ -150,60 +149,27 @@ async function generateIconsDataset(
  */
 async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<void> {
 	const txt = `<script lang="ts">
-  import type { SVGAttributes } from 'svelte/elements';
+  import type { IconSize } from '../../../Icon.d.ts';
+  import IconBase from '../../../IconBase.svelte';
 
-  const sizeMap = {
-    xs: '1rem',
-    sm: '1.25rem',
-    base: '1.5rem',
-    lg: '1.75rem',
-    xl: '2rem',
-  };
-
-  type IconSize = keyof typeof sizeMap;
-
-  interface $$Props extends SVGAttributes<SVGElement> {
-    size?: IconSize | string | number;
-    altText?: string;
-  }
-
-  export let altText = $$props.altText ?? '${capitalizeFirstLetter(iconObj.name)} icon';
-
-  const defaultSize = sizeMap['base'];
-
-  let _size: string;
-
-  $: _size =
-    $$props.size in sizeMap
-      ? sizeMap[$$props.size as unknown as IconSize]
-      : typeof $$props.size === 'number' || typeof $$props.size === 'string'
-      ? $$props.size
-      : defaultSize;
+  export let name: string = 'zoom-out';
+  export let altText: string | undefined = undefined;
+  export let size: IconSize | string | number = 'base';
 </script>
 
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width={_size}
-  height={_size}
-  fill="none"
-  stroke-width="1.5"
-  viewBox="0 0 24 24"
-  aria-hidden="true"
-  aria-labelledby={altText}
+<IconBase {name} {altText} {size}
   on:click
   on:dblclick
   on:keydown
   on:keyup
   on:mouseenter
   on:mouseleave
-  {...$$restProps}
->
+  {...$$restProps}>
   ${iconObj.data}
-</svg>`;
+</IconBase>`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
 }
-
 /**
  * It takes an icon object, and appends an export entry to the file.
  *
