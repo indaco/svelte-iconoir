@@ -1,11 +1,7 @@
 {
   "name": "@indaco/svelte-iconoir",
   "version": "6.0.3",
-  "type": "module",
-  "packageManager": "pnpm@8.10.1",
-  "author": "indaco <github@mircoveltri.me>",
   "description": "Iconoir SVG icons as Svelte components.",
-  "license": "MIT",
   "keywords": [
     "iconoir",
     "icons",
@@ -15,17 +11,39 @@
     "sveltekit",
     "svg-icons"
   ],
+  "bugs": {
+    "url": "https://github.com/indaco/svelte-iconoir/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/indaco/svelte-iconoir"
   },
-  "bugs": {
-    "url": "https://github.com/indaco/svelte-iconoir/issues"
-  },
-  "peerDependencies": {
-    "svelte": "^3.59.1 || ^4.0.0"
+  "license": "MIT",
+  "author": "indaco <github@mircoveltri.me>",
+  "sideEffects": false,
+  "type": "module",
+  "svelte": "./index.js",
+  "scripts": {
+    "build": "rimraf dist && pnpm sync && svelte-package",
+    "postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
+    "check": "pnpm sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "pnpm sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "clean": "rimraf dist && pnpm compile && node build/scripts/cleanAll.js",
+    "commitlint": "commitlint --edit",
+    "compile": "tsc --outDir build/scripts",
+    "cpfiles": "node build/scripts/cpFiles.js",
+    "dev": "pnpm sync && vite dev",
+    "format": "prettier --write --plugin prettier-plugin-svelte --ignore-path ./.prettierignore .",
+    "generate:icons": "pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
+    "generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
+    "lint": "prettier --check . && eslint .",
+    "prepare": "husky install",
+    "preview": "vite preview",
+    "sync": "svelte-kit sync"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.2.0",
+    "@commitlint/config-conventional": "^18.1.0",
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.27.2",
     "@sveltejs/package": "^2.2.2",
@@ -38,8 +56,11 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-svelte": "^2.34.0",
     "hast-util-to-html": "^9.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.2",
     "picocolors": "1.0.0",
     "prettier": "^3.0.3",
+    "prettier-plugin-packagejson": "^2.4.6",
     "prettier-plugin-svelte": "^3.0.3",
     "publint": "^0.2.5",
     "rimraf": "^5.0.5",
@@ -50,22 +71,8 @@
     "typescript": "^5.2.2",
     "vite": "^4.5.0"
   },
-  "scripts": {
-    "build": "rimraf dist && pnpm sync && svelte-package",
-    "check": "pnpm sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "pnpm sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "clean": "rimraf dist && pnpm compile && node build/scripts/cleanAll.js",
-    "compile": "tsc --outDir build/scripts",
-    "cpfiles": "node build/scripts/cpFiles.js",
-    "dev": "pnpm sync && vite dev",
-    "format": "prettier --write --plugin prettier-plugin-svelte --ignore-path ./.prettierignore .",
-    "generate:icons": "pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
-    "generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
-    "lint": "prettier --check . && eslint .",
-    "postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
-    "preview": "vite preview",
-    "sync": "svelte-kit sync"
+  "peerDependencies": {
+    "svelte": "^3.59.1 || ^4.0.0"
   },
-  "sideEffects": false,
-  "svelte": "./index.js"
+  "packageManager": "pnpm@8.10.1"
 }
