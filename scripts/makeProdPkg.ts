@@ -77,12 +77,12 @@ function main() {
 
 					// Build typesVersions
 					if (iconVariantName === 'regular') {
-						typesVersion['>4.0'][relativePath(iconName)] = [iconPaths.types];
+						typesVersion['>4.0'][iconName] = [iconPaths.types];
 						typesVersion['>4.0'][
 							relativePath(join(COMPONENTS_FOLDER, makeComponentFilename(iconComponent)))
 						] = [componentPaths.types];
 					} else {
-						typesVersion['>4.0'][relativePath(join(iconVariantName, iconName))] = [iconPaths.types];
+						typesVersion['>4.0'][join(iconVariantName, iconName)] = [iconPaths.types];
 						typesVersion['>4.0'][
 							relativePath(
 								join(COMPONENTS_FOLDER, iconVariantName, makeComponentFilename(iconComponent))
