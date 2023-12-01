@@ -27,7 +27,7 @@ devDependencies:
     version: 2.2.2(svelte@4.2.1)(typescript@5.2.2)
   '@types/cli-progress':
     specifier: ^3.11.4
-    version: 3.11.4
+    version: 3.11.5
   '@types/svg-parser':
     specifier: ^2.0.5
     version: 2.0.5
@@ -726,8 +726,8 @@ packages:
       - supports-color
     dev: true
 
-  /@types/cli-progress@3.11.4:
-    resolution: {integrity: sha512-yufTxeeNCZuEIxx2uebK8lpSAsJM4lvzakm/VxzYhDtqhXCzwH9jpn7nPCxzrROuEbLATqhFq4MIPoG0tlrsvw==}
+  /@types/cli-progress@3.11.5:
+    resolution: {integrity: sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==}
     dependencies:
       '@types/node': 20.8.3
     dev: true
