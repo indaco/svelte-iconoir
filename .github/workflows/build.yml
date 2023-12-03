@@ -1,0 +1,60 @@
+name: Build
+on:
+  - push
+  - pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install all dependencies
+        run: pnpm install
+
+      - name: Generates the icons components
+        run: pnpm generate:icons
+
+      - name: Run Prettier format
+        run: pnpm format
+
+      - name: Run Lint
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+        run: pnpm lint
+
+      - name: Build the package
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+        run: pnpm build
+
+      - name: Run postbuild scripts
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+        run: pnpm postbuild
