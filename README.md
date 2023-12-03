@@ -17,7 +17,7 @@ The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
 
-> `svelte-iconoir@6.0.x` matches `iconoir@7.0.0`
+> `svelte-iconoir@6.1.x` matches `iconoir@7.1.0`
 
 ## Install
 
@@ -202,6 +202,3 @@ pnpm postbuild
 ## License
 
 Free and open-source software under the [MIT License](LICENSE)
-
-<!-- -->
-[Template Syntax Tags]: https://svelte.dev/docs#template-syntax-tags
