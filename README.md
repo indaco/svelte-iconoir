@@ -138,8 +138,6 @@ In addition to these, each component can take the following properties:
 | :---------- | :--------- | :-------- | :---------------------------------------------------- |
 | size        | `IconSize` | `base`    | Set the attributes `width` and `height`               |
 | altText     | `string`   | icon name | Set the `aria-labelledby` attribute on the svg        |
-| style       | `string`   |           | Set the `style` attribute on the rendered svg         |
-| class       | `string`   |           | Set the `class` attribute on the rendered svg         |
 
 The underlying properties can also be set and overriden manually, e.g. setting `width` explicitly takes precedence over `size`.
 
