@@ -150,7 +150,7 @@ async function generateIconsDataset(
 async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<void> {
 	const txt = `<script lang="ts">
   import type { SVGProps } from '../../../Icon.d.ts';
-  import IconBase from '../../../IconBase.svelte';
+  import IconoirBase from '../../../IconoirBase.svelte';
 
   interface $$Props extends SVGProps {}
 
@@ -159,7 +159,7 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
   export let size: $$Props['size'] = 'base';
 </script>
 
-<IconBase {name} {altText} {size}
+<IconoirBase {name} {altText} {size}
   on:click
   on:dblclick
   on:keydown
@@ -168,7 +168,7 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
   on:mouseleave
   {...$$restProps}>
   ${iconObj.data}
-</IconBase>`;
+</IconoirBase>`;
 
 	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
 }

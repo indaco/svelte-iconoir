@@ -23,8 +23,8 @@
 		size && size in sizeMap
 			? sizeMap[size as unknown as IconSize]
 			: typeof size === 'number' || typeof size === 'string'
-			? size
-			: defaultSize;
+			  ? size
+			  : defaultSize;
 </script>
 
 <svg
