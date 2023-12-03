@@ -62,7 +62,7 @@ jobs:
         run: pnpm postbuild
 
       - name: Publish to NPM Packages
-        run: npm publish --access public ./dist
+        run: HUSKY=0 npm publish --access public ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTOMATION_TOKEN }}
 
@@ -74,6 +74,6 @@ jobs:
           scope: '@indaco'
 
       - name: Publish to GitHub Packages
-        run: npm publish ./dist
+        run: HUSKY=0 npm publish ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
