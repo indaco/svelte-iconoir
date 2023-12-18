@@ -1,4 +1,4 @@
-import type { Nodes } from 'hast-util-to-html/lib/index.js';
+import type { Nodes } from 'hast';
 import type { Icon, IconVariant } from './index.d.ts';
 import { toHtml } from 'hast-util-to-html';
 import { parse } from 'svg-parser';
