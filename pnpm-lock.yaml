@@ -31,6 +31,9 @@ devDependencies:
   '@types/cli-progress':
     specifier: ^3.11.5
     version: 3.11.5
+  '@types/hast':
+    specifier: ^3.0.3
+    version: 3.0.3
   '@types/svg-parser':
     specifier: ^2.0.6
     version: 2.0.6
