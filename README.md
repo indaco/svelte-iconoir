@@ -189,6 +189,9 @@ cd svelte-iconoir
 # Install all dependencies
 pnpm install # (or npm, yarn)
 
+# Update Iconoir submodule
+git submodule update --remote
+
 # Generate Svelte components for each icon
 pnpm generate:icons
 
