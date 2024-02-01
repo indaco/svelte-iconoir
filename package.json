@@ -22,12 +22,6 @@
   "author": "indaco <github@mircoveltri.me>",
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    ".": {
-      "svelte": "./index.js"
-    }
-  },
-  "svelte": "./index.js",
   "scripts": {
     "build": "rimraf dist && pnpm sync && svelte-package",
     "postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
