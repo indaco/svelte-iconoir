@@ -13,11 +13,9 @@
 
 # Svelte Iconoir
 
-The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1300+ SVG icons) as Svelte components.
+The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1500+ SVG icons) as Svelte components.
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/)
-
-> `svelte-iconoir@7.1.x` matches `iconoir@7.3.0`
 
 ## Install
 
