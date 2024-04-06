@@ -75,5 +75,5 @@
   "peerDependencies": {
     "svelte": "^3.59.1 || ^4.0.0"
   },
-  "packageManager": "pnpm@8.15.4"
+  "packageManager": "pnpm@8.15.6"
 }
