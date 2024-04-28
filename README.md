@@ -11,11 +11,9 @@
     <a href="https://www.npmjs.com/package/@indaco/svelte-iconoir" target="_blank"><img src="https://img.shields.io/npm/v/@indaco/svelte-iconoir.svg?style=flat" alt="NPM Package" /></a>
 </div>
 
-# Svelte Iconoir
-
 The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1500+ SVG icons) as Svelte components.
 
-See all available icons on the **iconoir** [homepage](https://iconoir.com/)
+See all available icons on the **iconoir** [homepage](https://iconoir.com/).
 
 ## Install
 
@@ -34,7 +32,7 @@ yarn add @indaco/svelte-iconoir
 
 ```html
 <script>
-  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_variant>/<icon_name>';
+	import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_variant>/<icon_name>';
 </script>
 ```
 
@@ -50,14 +48,14 @@ where:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
-  // or...
-  import  SunLightIcon  from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
+	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+	// or...
+	import SunLightIcon from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
 
-  // variant `solid`
-  import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
-  // or component import
-  import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
+	// variant `solid`
+	import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
+	// or component import
+	import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
 </script>
 ```
 
@@ -66,16 +64,16 @@ where:
 The naming convention above has few exceptions breaking it:
 
 1. icons for companies (github, youtube etc.):
-    - to reflect the real company names (GitHub, YouTube, etc.).
+   - to reflect the real company names (GitHub, YouTube, etc.).
 
-| Icon Name                | Component Name           |
-| :----------------------- | :----------------------- |
-| github                   | GitHubIcon               |
-| github-circle            | GitHubCircleIcon         |
-| gitlab-full              | GitLabFullIcon           |
-| linkedin                 | LinkedInIcon             |
-| tiktok                   | TikTokIcon               |
-| youtube                  | YouTubeIcon              |
+| Icon Name     | Component Name   |
+| :------------ | :--------------- |
+| github        | GitHubIcon       |
+| github-circle | GitHubCircleIcon |
+| gitlab-full   | GitLabFullIcon   |
+| linkedin      | LinkedInIcon     |
+| tiktok        | TikTokIcon       |
+| youtube       | YouTubeIcon      |
 
 ## Styling Icons
 
@@ -85,18 +83,18 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon class="roundedColor" />
 
 <style>
- .roundedColor {
-  padding: 4px;
-  background-color: yellow;
-  border-style: solid;
-  border-color: #d1d5db;
- }
+	.roundedColor {
+		padding: 4px;
+		background-color: yellow;
+		border-style: solid;
+		border-color: #d1d5db;
+	}
 </style>
 ```
 
@@ -104,19 +102,20 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon
- style="background-color: green; padding: 4px; border-radius: 9999px;"
- color="#ffffff" />
+	style="background-color: green; padding: 4px; border-radius: 9999px;"
+	color="#ffffff"
+/>
 ```
 
 ### 3. With Tailwind CSS
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon class="p-1 rounded-full border-2 bg-green-400" size="xl" />
@@ -127,15 +126,15 @@ You can apply your own styles to the icon components in different ways:
 Each icon component can take any attribute of a normal SVG Element, for example:
 
 ```html
-  <ZoomOutIcon fill="red" stroke-width="3" />
+<ZoomOutIcon fill="red" stroke-width="3" />
 ```
 
 In addition to these, each component can take the following properties:
 
-| Property    | Type       | Default   | Description                                           |
-| :---------- | :--------- | :-------- | :---------------------------------------------------- |
-| size        | `IconSize` | `base`    | Set the attributes `width` and `height`               |
-| altText     | `string`   | icon name | Set the `aria-labelledby` attribute on the svg        |
+| Property | Type       | Default   | Description                                    |
+| :------- | :--------- | :-------- | :--------------------------------------------- |
+| size     | `IconSize` | `base`    | Set the attributes `width` and `height`        |
+| altText  | `string`   | icon name | Set the `aria-labelledby` attribute on the svg |
 
 The underlying properties can also be set and overriden manually, e.g. setting `width` explicitly takes precedence over `size`.
 
@@ -146,13 +145,13 @@ The underlying properties can also be set and overriden manually, e.g. setting `
  */
 ```
 
-| Size | Value     |
-| :--- | --------: |
-| xs   | `1em`    |
+| Size |    Value |
+| :--- | -------: |
+| xs   |    `1em` |
 | sm   | `1.25em` |
-| base | `1.5em`  |
+| base |  `1.5em` |
 | lg   | `1.75em` |
-| xl   | `2em`    |
+| xl   |    `2em` |
 
 ## Event Forwarding
 
@@ -171,10 +170,10 @@ For example, you can set the `on:click` event on all icons.
 
 ```html
 <script>
-  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
-<SunLightIcon on:click={() => alert("hi!")} />
+<SunLightIcon on:click="{()" =""> alert("hi!")} /></SunLightIcon>
 ```
 
 ## Dev Flow
