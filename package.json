@@ -36,7 +36,6 @@
     "generate:icons": "pnpm sync && pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
     "generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
     "lint": "prettier --check . && eslint .",
-    "prepare": "husky install",
     "preview": "vite preview",
     "sync": "svelte-kit sync"
   },
@@ -57,7 +56,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.43.0",
     "hast-util-to-html": "^9.0.1",
-    "husky": "^8.0.3",
+    "husky": "^9.1.3",
     "lint-staged": "^15.2.7",
     "picocolors": "1.0.0",
     "prettier": "^3.3.3",
