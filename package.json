@@ -36,6 +36,7 @@
     "generate:icons": "pnpm sync && pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
     "generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
     "lint": "prettier --check . && eslint .",
+    "prepare": "husky",
     "preview": "vite preview",
     "sync": "svelte-kit sync"
   },
