@@ -1,6 +1,6 @@
 {
   "name": "@indaco/svelte-iconoir",
-  "version": "7.10.1",
+  "version": "7.11.0",
   "description": "Iconoir SVG icons as Svelte components.",
   "keywords": [
     "iconoir",
