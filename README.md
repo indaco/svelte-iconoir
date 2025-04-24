@@ -11,7 +11,7 @@
     <a href="https://www.npmjs.com/package/@indaco/svelte-iconoir" target="_blank"><img src="https://img.shields.io/npm/v/@indaco/svelte-iconoir.svg?style=flat" alt="NPM Package" /></a>
 </div>
 
-The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1500+ SVG icons) as Svelte components.
+The entire [iconoir](https://github.com/lucaburgio/iconoir) set (1600+ SVG icons) as Svelte components.
 
 See all available icons on the **iconoir** [homepage](https://iconoir.com/).
 
@@ -32,7 +32,7 @@ yarn add @indaco/svelte-iconoir
 
 ```html
 <script>
-	import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_variant>/<icon_name>';
+  import { <ComponentName>Icon } from '@indaco/svelte-iconoir/<icon_variant>/<icon_name>';
 </script>
 ```
 
@@ -48,14 +48,14 @@ where:
 
 ```html
 <script>
-	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
-	// or...
-	import SunLightIcon from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  // or...
+  import SunLightIcon from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
 
-	// variant `solid`
-	import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
-	// or component import
-	import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
+  // variant `solid`
+  import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
+  // or component import
+  import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
 </script>
 ```
 
@@ -83,18 +83,18 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon class="roundedColor" />
 
 <style>
-	.roundedColor {
-		padding: 4px;
-		background-color: yellow;
-		border-style: solid;
-		border-color: #d1d5db;
-	}
+  .roundedColor {
+    padding: 4px;
+    background-color: yellow;
+    border-style: solid;
+    border-color: #d1d5db;
+  }
 </style>
 ```
 
@@ -102,12 +102,12 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon
-	style="background-color: green; padding: 4px; border-radius: 9999px;"
-	color="#ffffff"
+  style="background-color: green; padding: 4px; border-radius: 9999px;"
+  color="#ffffff"
 />
 ```
 
@@ -115,7 +115,7 @@ You can apply your own styles to the icon components in different ways:
 
 ```html
 <script>
-	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon class="p-1 rounded-full border-2 bg-green-400" size="xl" />
@@ -136,7 +136,7 @@ In addition to these, each component can take the following properties:
 | size     | `IconSize` | `base`    | Set the attributes `width` and `height`        |
 | altText  | `string`   | icon name | Set the `aria-labelledby` attribute on the svg |
 
-The underlying properties can also be set and overriden manually, e.g. setting `width` explicitly takes precedence over `size`.
+The underlying properties can also be set and overridden manually, e.g. setting `width` explicitly takes precedence over `size`.
 
 ```javascript
 /**
@@ -170,7 +170,7 @@ For example, you can set the `on:click` event on all icons.
 
 ```html
 <script>
-	import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
+  import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
 </script>
 
 <SunLightIcon on:click="{()" =""> alert("hi!")} /></SunLightIcon>
