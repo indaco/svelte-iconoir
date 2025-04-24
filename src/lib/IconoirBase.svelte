@@ -9,6 +9,7 @@
 		xl: '2em'
 	} satisfies IconSizeMap;
 
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 	interface $$Props extends SVGProps {}
 
 	export let name: $$Props['name'] = undefined;
@@ -23,8 +24,8 @@
 		size && size in sizeMap
 			? sizeMap[size as unknown as IconSize]
 			: typeof size === 'number' || typeof size === 'string'
-			  ? size
-			  : defaultSize;
+				? size
+				: defaultSize;
 </script>
 
 <svg
