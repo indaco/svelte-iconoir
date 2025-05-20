@@ -1,26 +1,36 @@
+/**
+ * Build script that:
+ * - Parses SVGs into Svelte components
+ * - Writes compiled JS for each icon
+ * - Emits proper TypeScript exports
+ * - Supports both `regular` and `solid` variants
+ */
+
 import type { Nodes } from 'hast';
 import type { Icon, IconVariant } from './index.d.ts';
 import { toHtml } from 'hast-util-to-html';
-import { parse } from 'svg-parser';
+import { ElementNode, parse, RootNode } from 'svg-parser';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, basename } from 'node:path';
 import { promises as fsp } from 'node:fs';
 import cliProgress from 'cli-progress';
 import pc from 'picocolors';
+import { compile } from 'svelte/compiler';
 
 import {
 	mkDir,
 	makeComponentFilename,
 	makeComponentName,
-	generateIconComponentIndex,
-	generateExportEntryString
+	generateExportEntryString,
+	generateIconComponentIndex
 } from './utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const INPUT_FOLDER = join(__dirname, '..', '..', 'packages', 'iconoir', 'icons');
-const ICONS_OUTPUT_FOLDER = join(__dirname, '..', '..', 'src', 'lib', 'icons');
+const SRC_ICONS_FOLDER = join(__dirname, '..', '..', 'src', 'lib', 'icons');
+const DIST_ICONS_FOLDER = join(__dirname, '..', '..', 'dist', 'icons');
 
 const REGULAR_ICONS = join(INPUT_FOLDER, 'regular');
 const SOLID_ICONS = join(INPUT_FOLDER, 'solid');
@@ -33,108 +43,98 @@ const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_gre
 
 // ----------------------------------------------------------------
 
+/**
+ * Entry point: builds icon components and compiles them to JS.
+ */
 async function main() {
-	await mkDir(ICONS_OUTPUT_FOLDER);
+	await mkDir(SRC_ICONS_FOLDER);
+	await mkDir(DIST_ICONS_FOLDER);
 
 	console.log(pc.blue('* Getting list of all icons...'));
 
-	console.log(pc.blue('* Generating icon components...'));
 	for (const folder of ICONS_FOLDERS) {
-		const folderName = basename(folder);
+		const variant = basename(folder);
 		const files = await fsp.readdir(folder, 'utf-8');
-		const icons = await makeIconObjsList(folderName, files);
+		const icons = await makeIconObjsList(variant, files);
 
-		await generateFolderTree(join(ICONS_OUTPUT_FOLDER, folderName), icons);
-		await generateIconsDataset(folder, join(ICONS_OUTPUT_FOLDER, folderName), icons);
+		await generateFolderTree(SRC_ICONS_FOLDER, icons);
+		await generateIconsDataset(folder, SRC_ICONS_FOLDER, DIST_ICONS_FOLDER, icons);
 	}
 }
 
 // ----------------------------------------------------------------
 
 /**
- * It takes a list of file names, and returns a list of objects that contain the file name, the
- * name of the icon, the name of the component, the name of the component file, and the name of
- * the component folder.
+ * Creates metadata for each icon from a folder.
  *
- * @param {string[]} files - the list of files in the icons folder
- *
- * @returns An array of Icon objects.
+ * @param folder - Icon variant folder (e.g. "regular" or "solid")
+ * @param files - List of SVG file names
+ * @returns A list of `Icon` objects with metadata
  */
 async function makeIconObjsList(folder: string, files: string[]): Promise<Icon[]> {
-	return Promise.all(
-		files.map(async (file) => {
-			const svgFile = file;
-			const name = file.split('.').slice(0, -1).join('.');
-			const variant = folder as IconVariant;
-			const componentFolder = name;
-			const component = makeComponentName(name);
-			const componentFile = makeComponentFilename(component);
+	return files.map((file) => {
+		const name = file.split('.').slice(0, -1).join('.');
+		const componentFolder = name;
+		const component = makeComponentName(name);
 
-			return {
-				svgFile,
-				name,
-				variant,
-				component,
-				componentFile,
-				componentFolder
-			};
-		})
-	);
+		return {
+			svgFile: file,
+			name,
+			variant: folder as IconVariant,
+			component,
+			componentFolder
+		};
+	});
 }
 
 /**
- * It takes an array of icon objects and creates a folder for each icon in the iconsOutputFolder.
+ * Creates the output folder structure for each icon.
  *
- * @param {string} iconsOutputFolder - The folder where a folder for each icon will be generated.
- * @param {Icon[]} icons  - this is the array of icon objects.
+ * @param iconsOutputFolder - Base output folder (e.g. src/lib/icons)
+ * @param icons - List of icon metadata
  */
 async function generateFolderTree(iconsOutputFolder: string, icons: Icon[]): Promise<void> {
 	await Promise.all(
-		icons.map(async (icon) => {
-			await mkDir(join(iconsOutputFolder, icon.componentFolder));
-		})
+		icons.map((icon) => mkDir(join(iconsOutputFolder, icon.variant, icon.componentFolder)))
 	);
 }
 
 /**
- * It reads the SVG file, parses it, extracts the data, generates the Svelte component, generates
- * the index.ts and index.d.ts files, and appends an entry to the index.ts file.
+ * Parses SVG, generates Svelte + compiled JS + type files for each icon.
  *
- * @param {string} inputFolder - the folder where the original SVG files are located
- * @param {string} iconsOutputFolder - the folder where the generated icon components will be stored
- * @param {Icon[]} icons - an array of icons that we'll be generating
+ * @param inputFolder - Path to original SVGs
+ * @param srcOutputFolder - Path to `.svelte` files (for `svelte-package`)
+ * @param distOutputFolder - Path to compiled `.js` files
+ * @param icons - List of icon metadata
  */
 async function generateIconsDataset(
 	inputFolder: string,
-	iconsOutputFolder: string,
+	srcOutputFolder: string,
+	distOutputFolder: string,
 	icons: Icon[]
 ): Promise<void> {
-	progressBar.start(icons.length, 0, {
-		filename: 'N/A'
-	});
+	progressBar.start(icons.length, 0, { filename: 'N/A' });
 
 	await Promise.all(
 		icons.map(async (icon) => {
 			const svgRaw = await fsp.readFile(join(inputFolder, icon.svgFile), 'utf8');
-			const svgAst = parse(svgRaw);
-
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			const elem: svgParser.RootNode = svgAst.children[0];
+			const svgAst = parse(svgRaw) as RootNode;
+			const elem = svgAst.children[0] as ElementNode;
 			icon.data = toHtml(elem.children as unknown as Nodes);
 
 			counter++;
 
-			// generate svelte component for each icon
-			await makeIconComponent(iconsOutputFolder, icon);
-			// generate index.ts and index.d.ts files for each icon
-			await generateIconComponentIndex(iconsOutputFolder, icon);
-			// append an entry to index.ts file
+			// Write .svelte to src (for dev/kit packaging)
+			const svelteFile = await writeSvelteFile(srcOutputFolder, icon);
+
+			// Compile to JS (.js output to dist/)
+			await writeCompiledJS(svelteFile, distOutputFolder, icon);
+
+			// Write type + index entry
+			await generateIconComponentIndex(srcOutputFolder, icon); // for d.ts
 			await appendToIndexTs(icon);
 
-			progressBar.update(counter, {
-				filename: `${icon.componentFile}`
-			});
+			progressBar.update(counter, { filename: icon.name });
 		})
 	);
 
@@ -142,19 +142,21 @@ async function generateIconsDataset(
 }
 
 /**
- * It takes an icon object and writes a Svelte component file to the output folder.
+ * Generates the Svelte `.svelte` file for an icon.
  *
- * @param {string} outputFolder - The folder to output the icon components to.
- * @param {Icon} iconObj - The icon object from the icons.json file
+ * @param outputRoot - Root output dir (e.g. src/lib/icons)
+ * @param icon - Icon metadata
+ * @returns Full path to the generated Svelte file
  */
-async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<void> {
-	const txt = `<script lang="ts">
+async function writeSvelteFile(outputRoot: string, icon: Icon): Promise<string> {
+	const sveltePath = join(outputRoot, icon.variant, icon.componentFolder, 'index.svelte');
+	const source = `<script lang="ts">
   import type { SVGProps } from '../../../Icon.d.ts';
   import IconoirBase from '../../../IconoirBase.svelte';
 
   interface $$Props extends SVGProps {}
 
-  export let name: $$Props['name'] = '${iconObj.name}';
+  export let name: $$Props['name'] = '${icon.name}';
   export let altText: $$Props['altText'] = undefined;
   export let size: $$Props['size'] = 'base';
 </script>
@@ -167,23 +169,58 @@ async function makeIconComponent(outputFolder: string, iconObj: Icon): Promise<v
   on:mouseenter
   on:mouseleave
   {...$$restProps}>
-  ${iconObj.data}
+  ${icon.data}
 </IconoirBase>`;
 
-	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, iconObj.componentFile), txt);
+	await fsp.writeFile(sveltePath, source);
+	return sveltePath;
 }
-/**
- * It takes an icon object, and appends an export entry to the file.
- *
- * @param {Icon} iconObj - The icon object from the JSON file.
- */
-async function appendToIndexTs(iconObj: Icon): Promise<void> {
-	const indexFile = join(__dirname, '..', '..', 'src', 'lib', 'icons', iconObj.variant, 'index.ts');
-	const exportString = generateExportEntryString(iconObj);
 
-	progressBar.update(counter, {
-		filename: `${iconObj.componentFile}`
+/**
+ * Compiles a `.svelte` file to `.js` using Svelte compiler.
+ *
+ * @param svelteFile - Path to the source `.svelte` file
+ * @param distOutputRoot - Base output dir (e.g. dist/icons)
+ * @param icon - Icon metadata
+ */
+async function writeCompiledJS(
+	svelteFile: string,
+	distOutputRoot: string,
+	icon: Icon
+): Promise<void> {
+	const source = await fsp.readFile(svelteFile, 'utf8');
+	const { js } = compile(source, {
+		filename: 'index.svelte',
+		generate: 'client'
 	});
+
+	const jsOutDir = join(distOutputRoot, icon.variant, icon.componentFolder);
+	await mkDir(jsOutDir);
+	await fsp.writeFile(join(jsOutDir, 'index.js'), js.code);
+}
+
+/**
+ * Appends an `export` statement to the variant index file (e.g. `icons/regular/index.ts`)
+ *
+ * @param icon - Icon metadata
+ */
+async function appendToIndexTs(icon: Icon): Promise<void> {
+	const indexFile = join(__dirname, '..', '..', 'src', 'lib', 'icons', icon.variant, 'index.ts');
+	const folder = dirname(indexFile);
+
+	// Ensure the folder exists
+	await mkDir(folder);
+
+	// Ensure the index.ts file exists (create it if needed)
+	try {
+		await fsp.access(indexFile);
+	} catch {
+		await fsp.writeFile(indexFile, '');
+	}
+
+	const exportString = generateExportEntryString(icon);
+
+	progressBar.update(counter, { filename: icon.name });
 
 	await fsp.appendFile(indexFile, exportString);
 }

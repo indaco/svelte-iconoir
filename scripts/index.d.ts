@@ -5,7 +5,6 @@ export type Icon = {
 	name: string;
 	variant: IconVariant;
 	component: string;
-	componentFile: string;
 	componentFolder: string;
 	data?: string;
 };

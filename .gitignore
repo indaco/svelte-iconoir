@@ -88,3 +88,4 @@ src/lib/index.ts
 packages/iconoir
 package-lock.json
 .svelte-kit
+src/lib/IconoirBase.svelte.d.ts

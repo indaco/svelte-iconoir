@@ -23,19 +23,20 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && pnpm sync && svelte-package",
-    "postbuild": "pnpm generate:pkgjson && pnpm cpfiles && pnpm exec publint ./dist",
+    "build": "rimraf dist && pnpm sync && svelte-package --input=src/lib/icons --output=dist/icons --types",
+    "postbuild": "pnpm generate:exports && pnpm copy:static && pnpm prepack",
     "check": "pnpm sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "pnpm sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "clean": "rimraf dist && pnpm compile && node build/scripts/cleanAll.js",
+    "clean": "rimraf dist && node build/scripts/cleanAll.js && pnpm compile",
     "commitlint": "commitlint --edit",
     "compile": "tsc --project tsconfig.scripts.json --outDir build/scripts",
-    "cpfiles": "node build/scripts/cpFiles.js",
+    "copy:static": "node build/scripts/cpFiles.js",
     "dev": "pnpm sync && vite dev",
     "format": "prettier --write --plugin prettier-plugin-svelte --ignore-path ./.prettierignore .",
+    "generate:exports": "tsc --project tsconfig.scripts.json --outDir build/scripts && node build/scripts/patchPackageExports.js",
     "generate:icons": "pnpm sync && pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
-    "generate:pkgjson": "pnpm compile && node build/scripts/makeProdPkg.js",
     "lint": "prettier --check . && eslint .",
+    "prepack": "node build/scripts/validateExports.js && pnpm exec publint ./dist",
     "prepare": "husky",
     "preview": "vite preview",
     "sync": "svelte-kit sync"
@@ -58,6 +59,7 @@
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-svelte": "^3.8.1",
+    "glob": "^11.0.2",
     "globals": "^16.1.0",
     "hast-util-to-html": "^9.0.5",
     "husky": "^9.1.7",
@@ -79,5 +81,8 @@
   "peerDependencies": {
     "svelte": "^3.59.1 || ^4.0.0 || ^5.0.0"
   },
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "publishConfig": {
+    "directory": "dist"
+  }
 }
