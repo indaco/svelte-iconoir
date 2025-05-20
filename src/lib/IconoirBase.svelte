@@ -1,28 +1,37 @@
 <script lang="ts">
-	import type { IconSize, IconSizeMap, SVGProps } from './Icon.d.ts';
+	import { ICON_SIZE_MAP } from './constants.js';
+	import type { IconSize, SVGProps } from './Icon.d.ts';
 
-	const sizeMap = {
-		xs: '1em',
-		sm: '1.25em',
-		base: '1.5em',
-		lg: '1.75em',
-		xl: '2em'
-	} satisfies IconSizeMap;
+	const sizeMap = ICON_SIZE_MAP;
 
-	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-	interface $$Props extends SVGProps {}
+	/** The name of the icon to render (e.g. "zoom-out") */
+	export let name: SVGProps['name'] = undefined;
 
-	export let name: $$Props['name'] = undefined;
-	export let altText: $$Props['altText'] = undefined;
-	export let size: $$Props['size'] = 'base';
+	/** Accessible label (defaults to `${name} icon`) */
+	export let altText: SVGProps['altText'] = undefined;
 
-	const defaultSize = sizeMap['base'];
+	/** Icon size: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | number | string */
+	export let size: SVGProps['size'] = 'base';
+
+	export let svg: SVGProps['svg'] = undefined;
+
+	/**
+	 * Enables pointer cursor styling when interactive behavior is expected.
+	 *
+	 * Set to `true` if the icon has event listeners like `on:click` or `on:mouseenter`
+	 * to visually indicate interactivity (e.g., `cursor: pointer`).
+	 *
+	 * @default false
+	 */
+	export let interactive: SVGProps['interactive'] = false;
+
+	const defaultSize = sizeMap.base;
 
 	let _altText = altText ?? `${name} icon`;
 
 	let _size =
 		size && size in sizeMap
-			? sizeMap[size as unknown as IconSize]
+			? sizeMap[size as IconSize]
 			: typeof size === 'number' || typeof size === 'string'
 				? size
 				: defaultSize;
@@ -35,6 +44,7 @@
 	fill="none"
 	stroke-width="1.5"
 	viewBox="0 0 24 24"
+	style={interactive ? 'cursor: pointer' : undefined}
 	aria-hidden="true"
 	aria-labelledby={_altText}
 	{...$$restProps}
@@ -45,5 +55,9 @@
 	on:mouseenter
 	on:mouseleave
 >
-	<slot />
+	{#if svg}
+		<g>{@html svg}</g>
+	{:else}
+		<slot />
+	{/if}
 </svg>

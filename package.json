@@ -34,7 +34,7 @@
     "dev": "pnpm sync && vite dev",
     "format": "prettier --write --plugin prettier-plugin-svelte --ignore-path ./.prettierignore .",
     "generate:exports": "tsc --project tsconfig.scripts.json --outDir build/scripts && node build/scripts/patchPackageExports.js",
-    "generate:icons": "pnpm sync && pnpm compile && pnpm clean && node build/scripts/buildIconsDataset.js",
+    "generate:icons": "pnpm sync && pnpm compile && pnpm clean && node build/scripts/generateIconsJson.js",
     "lint": "prettier --check . && eslint .",
     "prepack": "node build/scripts/validateExports.js && pnpm exec publint ./dist",
     "prepare": "husky",
