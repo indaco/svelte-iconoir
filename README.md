@@ -49,13 +49,9 @@ where:
 ```html
 <script>
   import { SunLightIcon } from '@indaco/svelte-iconoir/sun-light';
-  // or...
-  import SunLightIcon from '@indaco/svelte-iconoir/components/SunLightIcon.svelte';
 
   // variant `solid`
   import { MinusCircleIcon } from '@indaco/svelte-iconoir/solid/minus-circle';
-  // or component import
-  import MinusCircleIcon from '@indaco/svelte-iconoir/components/solid/MinusCircleIcon.svelte';
 </script>
 ```
 

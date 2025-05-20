@@ -11,16 +11,6 @@ function main() {
 	console.log(pc.blue('* Generating the package.json file...'));
 
 	const entries: PkgExports = {
-		'./components/solid/*.svelte': {
-			types: './icons/solid/*.svelte.d.ts',
-			svelte: './icons/solid/*.svelte',
-			default: './icons/solid/*.svelte'
-		},
-		'./components/*.svelte': {
-			types: './icons/regular/*.svelte.d.ts',
-			svelte: './icons/regular/*.svelte',
-			default: './icons/regular/*.svelte'
-		},
 		'./solid/*': {
 			types: './icons/solid/*/index.d.ts',
 			svelte: './icons/solid/*/index.js',
@@ -35,8 +25,6 @@ function main() {
 
 	const typesVersion: PkgTypesVersions = {
 		'>4.0': {
-			'./components/solid/*.svelte': ['./icons/solid/*.svelte.d.ts'],
-			'./components/*.svelte': ['./icons/regular/*.svelte.d.ts'],
 			'./solid/*': ['./icons/solid/*/index.d.ts'],
 			'./*': ['./icons/regular/*/index.d.ts']
 		}
