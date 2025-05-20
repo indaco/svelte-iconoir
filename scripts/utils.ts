@@ -43,9 +43,14 @@ export async function generateIconComponentIndex(
 	outputFolder: string,
 	iconObj: Icon
 ): Promise<void> {
-	const txt = `export { default as ${iconObj.component} } from './${iconObj.componentFile}';`;
+	const iconFolder = join(outputFolder, iconObj.variant, iconObj.componentFolder);
+	const indexFilePath = join(iconFolder, 'index.ts');
 
-	await fsp.writeFile(join(outputFolder, iconObj.componentFolder, 'index.ts'), txt);
+	// Ensure the folder exists
+	await mkDir(iconFolder);
+
+	const txt = `export { default as ${iconObj.component} } from './index.svelte';`;
+	await fsp.writeFile(indexFilePath, txt);
 }
 
 export function generateExportEntryString(iconObj: Icon): string {
