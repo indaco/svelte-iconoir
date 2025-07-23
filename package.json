@@ -81,7 +81,7 @@
   "peerDependencies": {
     "svelte": "^3.59.1 || ^4.0.0 || ^5.0.0"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.13.1",
   "publishConfig": {
     "directory": "dist"
   }
